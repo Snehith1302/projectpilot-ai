@@ -1,0 +1,431 @@
+[
+  {
+    "id": "t_dev_01",
+    "title": "TerraView: Interactive IaC Blueprint Visualizer & Policy Linter",
+    "tagline": "Parses Terraform configurations, renders active dependency tree diagrams, and runs OPA compliance scans against custom policies.",
+    "resumeScore": 92,
+    "placementScore": 93,
+    "innovationScore": 94,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["Rust", "TypeScript", "React", "WebAssembly", "Open Policy Agent"],
+    "problemStatement": {
+      "overview": "Reviewing raw Terraform files is error-prone. TerraView compiles code to structured JSON, checks policies against Open Policy Agent guidelines, and presents visual layouts of cloud resource maps.",
+      "targetAudience": "Cloud Architects, DevOps Engineers, Security compliance officers",
+      "userPersonas": [
+        "Cloud Engineer validating architecture changes before merge requests.",
+        "Compliance officer enforcing encrypted disk standard protocols."
+      ]
+    },
+    "systemArchitecture": {
+      "narrative": "A web client tool. Files are parsed using a WebAssembly-compiled version of the HCL (HashiCorp Configuration Language) parser. Diagrams are drawn dynamically, and OPA rules are applied locally.",
+      "dataFlow": "Upload HCL files -> HCL Parser (Wasm) -> AST JSON Node tree -> D3.js visual renderer -> Open Policy Agent validator -> Violations list."
+    },
+    "features": {
+      "core": [
+        "Wasm HCL parser.",
+        "Interactive SVG dependency layout tree canvas.",
+        "OPA policy violation badge list."
+      ],
+      "advanced": [
+        "Cost estimations calculator (integration with Infracost API).",
+        "Automatic pull request markdown comment builder."
+      ]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "terraview/\n├── cli/                 # Rust CLI client\n├── wasm-parser/         # HCL parser module compiled to web assembly\n├── web/                 # React UI visual graph portal\n└── package.json",
+    "roadmap": [
+      {
+        "phase": "Phase 1",
+        "title": "HCL parsing to JSON",
+        "tasks": [
+          "Create Rust crate that parses terraform files.",
+          "Compile binary dependencies into WebAssembly modules."
+        ]
+      }
+    ],
+    "deploymentCiCd": {
+      "host": "Cloudflare Pages",
+      "containerization": "No server needed (purely client-side static files).",
+      "steps": [
+        "Build JS app bundle assets.",
+        "Publish builds to Cloudflare edge CDN."
+      ]
+    },
+    "placementArtifacts": {
+      "resumeBullets": [
+        "Developed an interactive Infrastructure-as-Code linter and visualizer utilizing React, Rust, and WebAssembly, rendering SVG node maps of resource trees."
+      ],
+      "interviewQuestions": [
+        {
+          "question": "Why did you compile the parser to WebAssembly rather than running it on a backend?",
+          "answerHint": "Highlight the benefits of client-side computation (zero hosting cost, immediate feedback, and absolute privacy for sensitive infrastructure files)."
+        }
+      ]
+    }
+  },
+  {
+    "id": "t_dev_02",
+    "title": "GlowTracer: Dynamic Distributed Tracing and Profiling CLI",
+    "tagline": "A lightweight CLI tool monitoring latency in localized systems, compiling visual flamegraphs in terminal windows.",
+    "resumeScore": 94,
+    "placementScore": 92,
+    "innovationScore": 95,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["Go", "Rust", "ebpf", "C"],
+    "problemStatement": {
+      "overview": "Legacy profiling tools inject severe runtime latency overheads. GlowTracer uses kernel ebpf hooks to monitor thread run durations non-invasively.",
+      "targetAudience": "Performance Engineers, Systems Architects, SRE engineers",
+      "userPersonas": ["Kernel performance engineer tracking latency spikes"]
+    },
+    "systemArchitecture": {
+      "narrative": "Hooks run inside kernel ring buffers. CLI reads stack frames and formats active flamegraphs dynamically inside terminal logs.",
+      "dataFlow": "eBPF Probe -> Ring Buffer -> Go Parser Daemon -> Frame Compiler -> Console flamegraph."
+    },
+    "features": {
+      "core": ["eBPF probe attachment modules", "Console stack frame visualizer"],
+      "advanced": ["Dynamic trace diffing analyzer", "Anomaly execution duration notifier"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "glowtracer/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Bare metal daemon",
+      "containerization": "Static binary execution",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed distributed profiler utilizing Go, Rust, and eBPF kernel event probes."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_03",
+    "title": "ConfigGuard: Automated Schema Linter for YAML configuration files",
+    "tagline": "Statically analyzes helm files and compose configurations, suggesting fixes for security misconfigs.",
+    "resumeScore": 88,
+    "placementScore": 90,
+    "innovationScore": 87,
+    "difficulty": "intermediate",
+    "duration": "1_week",
+    "domain": "dev_tools",
+    "techStack": ["Python", "Click CLI", "PyYAML", "Zod"],
+    "problemStatement": {
+      "overview": "Misconfigured YAML coordinates lead to container crashes. ConfigGuard runs checks on schemas to identify invalid properties before push commands.",
+      "targetAudience": "DevOps Engineers, QA, cloud developers",
+      "userPersonas": ["QA Engineer checking compose configurations"]
+    },
+    "systemArchitecture": {
+      "narrative": "Reads files. Traverses YAML node paths. Emits warnings detailing exact invalid paths and standard values templates.",
+      "dataFlow": "YAML File -> Parse Tree -> Rule engine checker -> Validation result map -> Terminal print."
+    },
+    "features": {
+      "core": ["YAML structural parser", "Schema check validations engine"],
+      "advanced": ["Auto-repair CLI format action", "Github actions inline comment creator"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "configguard/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Github Actions Runner",
+      "containerization": "Docker action container",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Created ConfigGuard linting CLI checking yaml files against structural schemas."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_04",
+    "title": "DockVisual: Local Docker Desktop Container map dashboard",
+    "tagline": "Renders interactive graph visual networks of running docker setups, volumes, and networks.",
+    "resumeScore": 91,
+    "placementScore": 92,
+    "innovationScore": 90,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["TypeScript", "Docker API", "React", "D3.js"],
+    "problemStatement": {
+      "overview": "Managing multi-container docker compose setups is difficult without a graph mapping of dynamic socket links.",
+      "targetAudience": "Web Developers, backend engineers, local systems QA",
+      "userPersonas": ["Fullstack dev auditing compose volume mounts"]
+    },
+    "systemArchitecture": {
+      "narrative": "React dashboard communicates via local Docker Socket API. Gathers stats on CPU, network connections, and volume maps.",
+      "dataFlow": "Docker socket stream -> Backend parser daemon -> Web sockets -> React UI canvas."
+    },
+    "features": {
+      "core": ["Docker API socket scanner", "Realtime stats websocket pipeline"],
+      "advanced": ["Visual topology layout tree canvas", "Dynamic volume mount inspector tool"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "dockvisual/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Self-hosted npm tool",
+      "containerization": "Standalone container application",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered DockVisual local diagnostic panel mapping volume attachments and socket links in D3."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_05",
+    "title": "MockAPI: Zero-Config Local REST server compiler CLI",
+    "tagline": "Reads schema files and spins up fully compliant mocked servers with custom endpoints and delays.",
+    "resumeScore": 89,
+    "placementScore": 91,
+    "innovationScore": 88,
+    "difficulty": "intermediate",
+    "duration": "1_week",
+    "domain": "dev_tools",
+    "techStack": ["Node.js", "Express", "Commander CLI", "Faker.js"],
+    "problemStatement": {
+      "overview": "Frontend developers wait for backend APIs to complete. MockAPI builds routes with realistic mocks and delays in seconds.",
+      "targetAudience": "Frontend developers, mobile engineers, QA automation crews",
+      "userPersonas": ["Frontend developer coding client screens offline"]
+    },
+    "systemArchitecture": {
+      "narrative": "Reads endpoint definitions in JSON format. Compiles dynamic express routing hooks on target port, generating mocked properties.",
+      "dataFlow": "API JSON specification -> MockAPI Engine -> Express Server creation -> Dynamic mock response endpoints."
+    },
+    "features": {
+      "core": ["Schema JSON configuration parser", "Dynamic express routing compiler"],
+      "advanced": ["Interactive dashboard request log viewer", "Random database failure rate injector"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "mockapi/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Local global node command",
+      "containerization": "Standalone package script",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed MockAPI CLI generating express servers with relational mock database properties."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_06",
+    "title": "BugSpy: Dynamic Debugger and Console Event Interceptor",
+    "tagline": "Statically injects logging wrappers into source files, providing call traces without modifying execution code.",
+    "resumeScore": 93,
+    "placementScore": 91,
+    "innovationScore": 94,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["TypeScript", "Acorn AST", "Babel", "Electron"],
+    "problemStatement": {
+      "overview": "Manual console.log insertion is tedious. BugSpy parses abstract syntax trees, automatically wrapping function blocks in telemetry triggers.",
+      "targetAudience": "Node.js developers, QA automation leads, debuggers",
+      "userPersonas": ["Backend developer tracking recursive function failures"]
+    },
+    "systemArchitecture": {
+      "narrative": "Parses source files into AST. Injects instrumentation logging tokens. Emits traces to Electron visualization dashboard.",
+      "dataFlow": "Source code upload -> Babel AST parser -> Instrumentation injection -> Executed code -> BugSpy Trace Dashboard."
+    },
+    "features": {
+      "core": ["AST traversal code injector", "WS logs websocket channel"],
+      "advanced": ["Visual function call tree timeline", "Source map error resolver tracker"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "bugspy/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Electron Desktop executable",
+      "containerization": "Self-contained package",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built BugSpy debugger AST instrumentation tools mapping runtime callback cascades."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_07",
+    "title": "WasmPacker: High-Performance WebAssembly module bundle builder",
+    "tagline": "Compiles Rust crates and C headers to optimized WebAssembly targets, generating Typescript bindings.",
+    "resumeScore": 95,
+    "placementScore": 93,
+    "innovationScore": 96,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "dev_tools",
+    "techStack": ["Rust", "Go", "WebAssembly", "TypeScript"],
+    "problemStatement": {
+      "overview": "Wasm build setups are complex. WasmPacker wraps compilation tools, generating typed TypeScript declarations automatically.",
+      "targetAudience": "Performance Web Developers, audio/video browser engineers, game developers",
+      "userPersonas": ["Web developer compiling video codec processing library"]
+    },
+    "systemArchitecture": {
+      "narrative": "CLI triggers compilation using system rustc/clang compilers. Formats memory layout headers and compiles modern bindings.",
+      "dataFlow": "Source files -> WasmPacker -> compiler wrapper -> optimized Wasm binary -> typed TypeScript bridge interface."
+    },
+    "features": {
+      "core": ["Rust/C to Wasm compiler wrapper", "TypeScript d.ts generator module"],
+      "advanced": ["Bundle size analyzer visual tool", "Web worker multithread sandbox adapter"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "wasmpacker/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "NPM Global executable",
+      "containerization": "Standalone package",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Designed WasmPacker Rust compiler tooling generating TS declarations for Wasm modules."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_08",
+    "title": "BenchMark: Cloud API Stress and Load Testing Simulator",
+    "tagline": "Runs distributed load tests from local network endpoints, auditing API performance metrics.",
+    "resumeScore": 90,
+    "placementScore": 91,
+    "innovationScore": 89,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["Go", "React", "WebSockets", "Plotly"],
+    "problemStatement": {
+      "overview": "Simulating high concurrency API usage requires complex cloud setups. BenchMark spawns local worker pools executing HTTP requests.",
+      "targetAudience": "Backend developers, QA automation leads, SRE teams",
+      "userPersonas": ["API developer stress-testing authentication endpoint"]
+    },
+    "systemArchitecture": {
+      "narrative": "Multi-threaded worker pool written in Go. WebSockets pipe latency data to visual dashboards using Plotly graphics.",
+      "dataFlow": "Configure endpoint -> Spawn Go request worker pool -> WS stream stats -> Plotly dashboard canvas."
+    },
+    "features": {
+      "core": ["Concurreny Go request runner", "WebSocket telemetry channel"],
+      "advanced": ["Percentile latency charts plotter", "Automatic HTML performance report generator"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "benchmark/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS EC2",
+      "containerization": "Docker Compose",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Created BenchMark load tester generating 50k+ concurrent requests securely in Go."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_09",
+    "title": "SchemaDiff: Database Migration schema auditor",
+    "tagline": "Scans SQL schema structures, generating incremental safe SQL migration scripts.",
+    "resumeScore": 91,
+    "placementScore": 92,
+    "innovationScore": 90,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["Python", "SQLAlchemy", "Alembic", "SQLite"],
+    "problemStatement": {
+      "overview": "Manual SQL migrations lead to data loss. SchemaDiff tracks schema alterations and auto-compiles migration paths.",
+      "targetAudience": "Database Administrators, backend developers, release teams",
+      "userPersonas": ["Backend dev changing relational model properties"]
+    },
+    "systemArchitecture": {
+      "narrative": "Compares active target database structure with model source definitions. Compiles migration steps securely.",
+      "dataFlow": "Model file definitions -> SchemaDiff comparison -> SQL schema comparison -> Migration file generation."
+    },
+    "features": {
+      "core": ["Relational model parser schema checker", "SQL migration scripts builder"],
+      "advanced": ["Destructive migration validation alarm", "Automatic data rollbacks transaction composer"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "schemadiff/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "PyPI library",
+      "containerization: ": "Standalone package script",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed SchemaDiff migration compiler detecting structural schema changes in Python."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dev_10",
+    "title": "GitFlow: Visual Git Branching and Interactive Conflict Resolver",
+    "tagline": "Renders interactive local git branching structures and provides merge conflict GUI selectors.",
+    "resumeScore": 92,
+    "placementScore": 93,
+    "innovationScore": 91,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "dev_tools",
+    "techStack": ["TypeScript", "Git CLI", "React", "Cytoscape.js"],
+    "problemStatement": {
+      "overview": "Resolving git conflicts in terminal is complex. GitFlow maps branches visually, highlighting identical conflict lines.",
+      "targetAudience": "Software engineering teams, students, git users",
+      "userPersonas": ["SDE resolving main merge branches conflicts"]
+    },
+    "systemArchitecture": {
+      "narrative": "React app reads Git CLI inputs. Renders Cytoscape.js graph layout. Highlights conflict tags with choices GUI.",
+      "dataFlow": "Git project files -> Git CLI indexer -> Branch map (Cytoscape) -> React merge choices selector."
+    },
+    "features": {
+      "core": ["Git index directory scanner", "Branch Cytoscape canvas graph"],
+      "advanced": ["Visual merge choices diff selector", "Interactive branch rollback actions manager"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "gitflow/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "NPM package binary",
+      "containerization": "Standalone package wrapper",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built GitFlow branch visualizer and conflict resolver GUI utilizing React and Cytoscape.js."],
+      "interviewQuestions": []
+    }
+  }
+]

@@ -1,0 +1,458 @@
+[
+  {
+    "id": "t_ai_01",
+    "title": "RepoPilot AI: Intelligent Multi-Agent Codebase RAG Engine",
+    "tagline": "Deep semantic search, automatic architectural diagramming, and test suite generation for local repositories using localized embeddings.",
+    "resumeScore": 94,
+    "placementScore": 92,
+    "innovationScore": 96,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "ai_rag",
+    "techStack": ["TypeScript", "Python", "React", "LangChain", "ChromaDB", "FastAPI"],
+    "problemStatement": {
+      "overview": "Developers onboarding onto large, legacy repositories spend up to 40% of their time reading documentation and tracing function paths rather than writing code. RepoPilot AI indexes codebase repositories locally and coordinates a team of specialized AI agents to answer complex architectural questions, construct Mermaid UML diagrams, and auto-write integration test specs.",
+      "targetAudience": "Software Engineers, Technical Architects, Dev Teams onboarding remote engineers",
+      "userPersonas": [
+        "Junior Engineer seeking clarification on internal utility usage without disturbing senior peers.",
+        "Lead Architect validating structural dependencies and design patterns."
+      ]
+    },
+    "systemArchitecture": {
+      "narrative": "A client-server application where a background worker indexes files, extracts syntax trees, creates semantic embeddings, and stores them in ChromaDB. When a query arrives, a Master Router Agent splits the task between an Explainer Agent (handles codebase logic) and a Diagrammer Agent (constructs Mermaid flows).",
+      "dataFlow": "Codebase Upload -> AST Parser (Babel/Esprima) -> Embedding Pipeline (SentenceTransformers) -> Vector Database (ChromaDB) -> Prompt context -> LLM Agent Router -> Agent Execution -> Output."
+    },
+    "features": {
+      "core": [
+        "Automatic Codebase Parsing: AST traversal for Python, TypeScript, and Go.",
+        "Semantic Vector Search: Multi-threaded directory scanner with incremental change detection.",
+        "Interactive Visual Diagrams: Render interactive visual UML flows using Mermaid.js."
+      ],
+      "advanced": [
+        "Agentic Code Correction: Multi-agent execution utilizing self-refinement loops to rewrite buggy modules.",
+        "Local Sandboxed Execution: Safely runs suggested unit tests in an isolated Docker container."
+      ]
+    },
+    "databaseApiSpecification": {
+      "tables": [
+        {
+          "name": "repositories",
+          "columns": ["id (UUID) - Primary Key", "name (VARCHAR)", "local_path (TEXT)", "last_indexed_at (TIMESTAMP)"],
+          "description": "Stores metadata of indexed repository folders."
+        },
+        {
+          "name": "code_embeddings",
+          "columns": ["id (UUID) - Primary Key", "repo_id (UUID) - FK", "file_path (TEXT)", "chunk_content (TEXT)", "vector_id (VARCHAR)"],
+          "description": "Maps structural code chunks to entries in the vector store database."
+        }
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/v1/repos/index",
+          "requestBody": "{\"path\": \"C:/Projects/App\"}",
+          "responseBody": "{\"repoId\": \"repo-9821-abc\", \"filesCount\": 142, \"status\": \"indexing\"}",
+          "description": "Scans directory, fires AST parsing thread, and uploads vectors."
+        }
+      ]
+    },
+    "directoryStructure": "repo-pilot-ai/\n├── backend/\n│   ├── src/\n│   │   ├── index.py          # FastAPI Gateway\n│   │   └── parser.py         # AST structural parser\n└── README.md",
+    "roadmap": [
+      {
+        "phase": "Phase 1: Foundation",
+        "title": "Parser and Database Indexer",
+        "tasks": [
+          "Create AST parser to traverse file paths and skip ignored files.",
+          "Connect local embeddings engine (Ollama/Hugging Face sentence-transformers)."
+        ]
+      }
+    ],
+    "deploymentCiCd": {
+      "host": "Self-hosted (Docker Desktop) / Render (API Service)",
+      "containerization": "Multi-stage Dockerfile bundling Python backend and frontend Node assets.",
+      "steps": [
+        "Build frontend files using Vite.",
+        "Inject assets into static folder of python runtime.",
+        "Run Docker compose command: docker-compose up --build."
+      ]
+    },
+    "placementArtifacts": {
+      "resumeBullets": [
+        "Engineered an autonomous codebase documentation agent system utilizing React, FastAPI, and ChromaDB, saving developers up to 40% on onboarding durations.",
+        "Designed a local multi-agent retrieval pipeline using AST code parsing and LangGraph routing to dynamically render structural application flow diagrams."
+      ],
+      "interviewQuestions": [
+        {
+          "question": "How do you handle rate-limiting or context window caps in your RAG pipeline?",
+          "answerHint": "Explain how text is chunked into logical functional blocks, and highlight how the AST parser is used to include only relevant code context."
+        }
+      ]
+    }
+  },
+  {
+    "id": "t_ai_02",
+    "title": "FinSight: Multi-Modal RAG Platform for Financial Earnings Call Analysis",
+    "tagline": "Extracts semantic insights and structured tables from earnings call audio and transcripts using hybrid search vectors.",
+    "resumeScore": 92,
+    "placementScore": 91,
+    "innovationScore": 93,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "ai_rag",
+    "techStack": ["Python", "React", "PGVector", "Whisper", "LangChain"],
+    "problemStatement": {
+      "overview": "Financial analysts spend hours listening to transcripts to look for business trends. FinSight parses earnings PDFs and audios, indexes them with cross-attention tables, and lets analysts query semantic information.",
+      "targetAudience": "Equity Researchers, Investment Analysts, Venture Capitalists",
+      "userPersonas": ["Buy-side Analyst looking for YoY revenue trends", "SRE engineer checking cloud costs data"]
+    },
+    "systemArchitecture": {
+      "narrative": "Whisper extracts audio. Text chunker indexes documents into Postgres pgvector. Queries search semantic text and raw structured database metrics.",
+      "dataFlow": "Upload Audio -> Whisper API -> Text Chunks -> PGVector Indexing -> User RAG Query -> LLM Summary output."
+    },
+    "features": {
+      "core": ["PDF and Audio semantic parsing", "pgvector multi-modal index searcher"],
+      "advanced": ["Financial table extraction parsing agent", "Agentic query refiner loop"]
+    },
+    "databaseApiSpecification": {
+      "tables": [
+        {
+          "name": "documents",
+          "columns": ["id (UUID)", "filename (VARCHAR)", "uploaded_at (TIMESTAMP)"],
+          "description": "Earnings files store"
+        }
+      ],
+      "endpoints": []
+    },
+    "directoryStructure": "finsight/\n├── backend/\n└── README.md",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS ECS Fargate",
+      "containerization": "Docker setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed an automated equity analysis engine implementing PGVector and Whisper audio transcribing."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_03",
+    "title": "MediShield: Secure Privacy-Preserving Health RAG Pipeline",
+    "tagline": "RAG query engine over EHR data using local anonymization proxy engines and zero-knowledge queries.",
+    "resumeScore": 95,
+    "placementScore": 94,
+    "innovationScore": 96,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "ai_rag",
+    "techStack": ["Go", "React", "Presidio", "Ollama", "Milvus"],
+    "problemStatement": {
+      "overview": "Healthcare entities cannot send EHR records to public LLMs due to HIPAA rules. MediShield strips all PII before indexing, and operates purely on an offline sandboxed server.",
+      "targetAudience": "Hospitals, Clinics, Compliance Officers",
+      "userPersonas": ["Doctor reviewing historical case files", "Auditor validating privacy rules compliance"]
+    },
+    "systemArchitecture": {
+      "narrative": "Incoming files pass through Microsoft Presidio proxy. Tokens anonymize personal names. Queries use Milvus vector index on the localized nodes.",
+      "dataFlow": "EHR Input -> Presidio Anonymizer -> Encrypted Tokens -> Milvus Vector Store -> local Ollama query -> De-anonymized display."
+    },
+    "features": {
+      "core": ["PII stripping middleware", "Offline first vector lookup"],
+      "advanced": ["Dynamic de-anonymizing mapping decoder", "Prescriptive audit logging trail"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "medishield/\n└── README.md",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "On-Premises Bare Metal server",
+      "containerization": "Docker Compose",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Architected HIPAA-compliant RAG pipeline processing 10k+ patient EHR files securely."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_04",
+    "title": "QuerySage: Automated SQL schema blueprint and RAG Assistant",
+    "tagline": "Translates natural language questions to database queries using schema definitions context.",
+    "resumeScore": 90,
+    "placementScore": 91,
+    "innovationScore": 89,
+    "difficulty": "intermediate",
+    "duration": "1_week",
+    "domain": "ai_rag",
+    "techStack": ["Python", "FastAPI", "SQLite", "LlamaIndex"],
+    "problemStatement": {
+      "overview": "Non-technical users cannot query SQL databases. QuerySage reads DB schemas and translates questions to optimized SQL statements.",
+      "targetAudience": "Product Managers, Sales representatives, Data entry staff",
+      "userPersonas": ["Sales lead finding client signups in July", "PM tracking daily active usage"]
+    },
+    "systemArchitecture": {
+      "narrative": "Extracts SQLite metadata. Maps relationships and tables. Builds contextual prompt for LLM translating to raw SQL.",
+      "dataFlow": "User question -> Schema extractor -> Prompt context -> LLM SQL generator -> Executer query -> Results visualizer."
+    },
+    "features": {
+      "core": ["Schema catalog parsing", "SQL query translator"],
+      "advanced": ["Schema update analyzer check", "Automatic error-correcting parser loop"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "querysage/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Render",
+      "containerization": "Docker",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Created an automated text-to-SQL translation router using LlamaIndex and FastAPI."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_05",
+    "title": "DocuVerify: Cross-Document Consistency Auditor and Fact Checker",
+    "tagline": "Identifies contradictions, missing dependencies, and inconsistencies across large document libraries using graph RAG.",
+    "resumeScore": 91,
+    "placementScore": 92,
+    "innovationScore": 92,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "ai_rag",
+    "techStack": ["TypeScript", "Node.js", "Neo4j", "LlamaIndex"],
+    "problemStatement": {
+      "overview": "Compliance contracts and engineering guidelines often contradict each other, leading to execution failures. DocuVerify maps cross-document entity networks into Neo4j.",
+      "targetAudience": "Quality Assurance teams, Legal departments, Systems engineers",
+      "userPersonas": ["QA Lead auditing ISO requirements documents", "Legal review partner auditing vendor contracts"]
+    },
+    "systemArchitecture": {
+      "narrative": "Extracts entity triples (subject, predicate, object) from texts. Indexes nodes in Neo4j database graph. Triggers search patterns.",
+      "dataFlow": "Document upload -> Triple extractor -> Graph database write -> Graph RAG traversal query -> Conflict analyzer alert."
+    },
+    "features": {
+      "core": ["Text entity triplet compiler", "Neo4j graph query parser"],
+      "advanced": ["Contradiction discovery neural classifier", "Graph path visualizer canvas"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "docuverify/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Railway",
+      "containerization": "Docker",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered a graph-based RAG consistency scanner utilizing Neo4j to audit 500+ compliance procedures."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_06",
+    "title": "LawPilot: Intelligent Contract Negotiation and RAG Advisor",
+    "tagline": "Audits corporate leases and legal vendor agreements, suggesting revisions and identifying hidden risks.",
+    "resumeScore": 93,
+    "placementScore": 91,
+    "innovationScore": 94,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "ai_rag",
+    "techStack": ["Python", "FastAPI", "Pinecone", "LangChain"],
+    "problemStatement": {
+      "overview": "Small businesses sign complex lease contracts containing indemnification clauses. LawPilot highlights anomalous clauses compared to regulatory compliance indexes.",
+      "targetAudience": "Small business owners, legal advisors, startup operations managers",
+      "userPersonas": ["Startup founder review co-working lease agreement"]
+    },
+    "systemArchitecture": {
+      "narrative": "Vectorizes contract clauses. Compares against legal templates in Pinecone. Highlights risk clauses with AI explanations.",
+      "dataFlow": "Contract PDF -> OCR Parser -> Segment Clauses -> Semantic Vector comparison -> Compliance Risk Score report."
+    },
+    "features": {
+      "core": ["OCR document ingestion parsing", "Clause classifier engine"],
+      "advanced": ["Interactive clause editor revisions", "Jurisdiction-specific risk parser"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "lawpilot/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Render",
+      "containerization": "Docker",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built a legal contract clause analyzer using FastAPI, OCR text ingestion, and Pinecone vectors."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_07",
+    "title": "CodeCraft AI: Multi-Agent Software Engineering Scaffold Simulator",
+    "tagline": "Autonomous code architecture generator that designs database models and writes full scaffolding files.",
+    "resumeScore": 96,
+    "placementScore": 95,
+    "innovationScore": 97,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "ai_rag",
+    "techStack": ["Go", "React", "Ollama", "LangGraph"],
+    "problemStatement": {
+      "overview": "Software boilerplate generation consumes hours of engineering setup. CodeCraft AI reads user schemas and coordinates writing complete, verified project code structures.",
+      "targetAudience": "SaaS developers, software agencies, hackathon competitors",
+      "userPersonas": ["Fullstack dev needing quick boilerplate API structures"]
+    },
+    "systemArchitecture": {
+      "narrative": "A team of Go agents coordinate tasks. The Architect Agent writes schemas, the Coder Agent compiles functions, the QA Agent runs test loops.",
+      "dataFlow": "Feature prompt -> Architect Agent -> Schema structure -> Coder Agent -> Code files -> Docker test run -> Output Zip."
+    },
+    "features": {
+      "core": ["File tree scaffold creator", "Multi-agent coordinator engine"],
+      "advanced": ["Local docker container execution validation", "Incremental git commit history generator"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "codecraft/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Self-hosted",
+      "containerization": "Docker API execution",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered a multi-agent backend compiler generating production-ready scaffolds in Go."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_08",
+    "title": "RetailBuddy: Context-Aware Retail Conversational Agent",
+    "tagline": "RAG-powered conversational engine integrated with Shopify stores to handle support queries and recommend products.",
+    "resumeScore": 90,
+    "placementScore": 92,
+    "innovationScore": 88,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "ai_rag",
+    "techStack": ["Node.js", "React", "Qdrant", "Shopify API"],
+    "problemStatement": {
+      "overview": "Retail support tickets are costly. RetailBuddy indexes store inventories and helps users search, verify order status, and complete refunds.",
+      "targetAudience": "Shopify merchants, e-commerce stores, retail brands",
+      "userPersonas": ["Shopper seeking replacement sizing recommendations"]
+    },
+    "systemArchitecture": {
+      "narrative": "Webhooks feed inventory to Qdrant. The bot checks stock and processes user returns via secure store APIs.",
+      "dataFlow": "Chat query -> Shopify Webhook check -> Qdrant vector similarity search -> Product recommendation output."
+    },
+    "features": {
+      "core": ["Inventory catalog synchronization", "Chat widget canvas panel"],
+      "advanced": ["Automatic checkout link composer", "Realtime order status checking gateway"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "retailbuddy/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Cloudflare Workers",
+      "containerization": "Wasm runtime",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed a Shopify RAG bot utilizing Qdrant vector stores, reducing support ticket volume by 30%."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_09",
+    "title": "BioSearch: Medical Literature Vector Graph Search Assistant",
+    "tagline": "Semantic search engine over PubMed databases extracting drug interactions and clinical trial links.",
+    "resumeScore": 94,
+    "placementScore": 93,
+    "innovationScore": 95,
+    "difficulty": "advanced",
+    "duration": "1_2_months",
+    "domain": "ai_rag",
+    "techStack": ["Python", "Neo4j", "Weaviate", "FastAPI"],
+    "problemStatement": {
+      "overview": "Researching clinical journals is slow. BioSearch maps document topics to Weaviate vector databases and Neo4j citation relationship networks.",
+      "targetAudience": "Medical researchers, pharmacologists, clinical trial managers",
+      "userPersonas": ["Virologist researching coronavirus protein structures"]
+    },
+    "systemArchitecture": {
+      "narrative": "PubMed papers are parsed. Vectors map text semantic concepts. Citations link nodes in a graph mapping relationships.",
+      "dataFlow": "Ingest articles -> Abstract vectors (Weaviate) -> Citations map (Neo4j) -> Hybrid graph-vector search."
+    },
+    "features": {
+      "core": ["PubMed parser scanner", "Hybrid semantic vector graph lookup"],
+      "advanced": ["Drug interaction mapping scanner", "Interactive medical entity canvas graph"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "biosearch/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS ECS",
+      "containerization": "Docker Compose",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Architected medical vector search indexing Weaviate and Neo4j graph databases for citation extraction."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_ai_10",
+    "title": "EduLearn: Smart Course Syllabus RAG blueprint Generator",
+    "tagline": "Parses reference books and builds comprehensive study plans and customized homework assignments.",
+    "resumeScore": 91,
+    "placementScore": 93,
+    "innovationScore": 90,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "ai_rag",
+    "techStack": ["TypeScript", "Next.js", "ChromaDB", "FastAPI"],
+    "problemStatement": {
+      "overview": "Teachers struggle to compose customized curricula that match varying student skill bounds. EduLearn creates lesson structures dynamically.",
+      "targetAudience": "Instructors, online educators, home-school parents",
+      "userPersonas": ["Coding tutor compiling full course syllabi for kids"]
+    },
+    "systemArchitecture": {
+      "narrative": "Reads reference books. Generates topic indices. Creates modular quiz schedules matched to syllabus phases.",
+      "dataFlow": "Upload Textbook -> Chroma indexing -> Class profile input -> Syllabus generator output -> Quiz maker sheets."
+    },
+    "features": {
+      "core": ["Textbook parser extractor", "Syllabus constructor pipeline"],
+      "advanced": ["Dynamic quiz grading analyzer", "Student difficulty adjuster tracker"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "edulearn/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Vercel",
+      "containerization": "Serverless",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built a Next.js RAG study blueprint compiler utilizing ChromaDB vector catalogs."],
+      "interviewQuestions": []
+    }
+  }
+]

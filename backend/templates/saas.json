@@ -1,0 +1,450 @@
+[
+  {
+    "id": "t_saas_01",
+    "title": "SaaSify: Multi-Tenant Billing, Analytics & Provisioning Gateway",
+    "tagline": "An enterprise-grade multi-tenant foundation providing database isolation, stripe billing integration, feature flags, and sub-domain routing.",
+    "resumeScore": 91,
+    "placementScore": 95,
+    "innovationScore": 89,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["TypeScript", "Next.js", "PostgreSQL", "Stripe", "Redis"],
+    "problemStatement": {
+      "overview": "Bootstrapping new SaaS platforms requires duplicating complex boilerplate logic like subscription checks, tenant isolation, and invoice handling. SaaSify provides a pre-architected gateway to accelerate SaaS product delivery.",
+      "targetAudience": "Startup Founders, Indie Hackers, Enterprise Web Teams",
+      "userPersonas": [
+        "Full-stack developer building a new SaaS product.",
+        "Product manager needing flexible subscription tiers."
+      ]
+    },
+    "systemArchitecture": {
+      "narrative": "A Next.js application that uses PostgreSQL schemas or row-level security (RLS) to enforce tenant isolation. Stripe webhooks keep billing and access states synchronized.",
+      "dataFlow": "Client Request -> Tenant Identifier Middleware -> PostgreSQL RLS Context -> Stripe Webhook Updates -> Tenant Dashboard UI."
+    },
+    "features": {
+      "core": [
+        "Tenant Schema Isolation using PostgreSQL RLS.",
+        "Stripe Subscription Sync (webhooks and checkout portal).",
+        "Dynamic Domain Routing (tenant.domain.com)."
+      ],
+      "advanced": [
+        "Real-time usage meter dashboard powered by Redis Timeseries.",
+        "Admin feature flag control center."
+      ]
+    },
+    "databaseApiSpecification": {
+      "tables": [
+        {
+          "name": "tenants",
+          "columns": ["id (UUID) - PK", "name (VARCHAR)", "subdomain (VARCHAR)", "created_at (TIMESTAMP)"],
+          "description": "Tenant meta mappings."
+        },
+        {
+          "name": "subscriptions",
+          "columns": ["id (UUID) - PK", "tenant_id (UUID) - FK", "stripe_sub_id (VARCHAR)", "status (VARCHAR)"],
+          "description": "Tracks payment statuses per tenant."
+        }
+      ],
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/tenant/billing",
+          "requestBody": "",
+          "responseBody": "{\"plan\": \"enterprise\", \"nextInvoice\": \"2026-08-01\"}",
+          "description": "Fetches active tenant subscription profiles."
+        }
+      ]
+    },
+    "directoryStructure": "saasify/\n├── apps/\n│   ├── web/              # Next.js web application\n│   └── api/              # Express backend handler\n├── packages/\n│   └── database/         # Shared Prisma definitions\n└── package.json",
+    "roadmap": [
+      {
+        "phase": "Phase 1",
+        "title": "Tenant Separation",
+        "tasks": [
+          "Configure PostgreSQL Prisma Client with RLS policies.",
+          "Build wildcard subdomain router."
+        ]
+      }
+    ],
+    "deploymentCiCd": {
+      "host": "Vercel + Neon Serverless PostgreSQL",
+      "containerization": "Node.js standalone build targets.",
+      "steps": [
+        "Configure database environment variables.",
+        "Trigger Vercel main branch deploy command."
+      ]
+    },
+    "placementArtifacts": {
+      "resumeBullets": [
+        "Designed a multi-tenant SaaS starter kit supporting dynamic database row-level security (RLS) and custom subdomains, slashing bootstrapping timelines by 60%."
+      ],
+      "interviewQuestions": [
+        {
+          "question": "How do you guarantee a tenant cannot view or alter another tenant's data?",
+          "answerHint": "Explain how PostgreSQL row-level security (RLS) automatically injects current tenant context checks into database queries."
+        }
+      ]
+    }
+  },
+  {
+    "id": "t_saas_02",
+    "title": "Analytix: Customer Event Tracking and Funnel Analytics Engine",
+    "tagline": "Renders real-time dashboards mapping users product navigation, tracking conversion drop-offs.",
+    "resumeScore": 92,
+    "placementScore": 91,
+    "innovationScore": 90,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["Go", "React", "ClickHouse", "Kafka"],
+    "problemStatement": {
+      "overview": "Processing billions of user actions is costly. Analytix indexes data inside ClickHouse, compiling metrics summaries in milliseconds.",
+      "targetAudience": "Product managers, growth marketing crews, SaaS companies leads",
+      "userPersonas": ["Growth lead tracking funnel checkout completion drop-offs"]
+    },
+    "systemArchitecture": {
+      "narrative": "JS SDK pushes events. API writes entries to Kafka. Background consumers write batches to ClickHouse columnar database.",
+      "dataFlow": "Browser event -> HTTP API -> Kafka topic -> Go consumer batch -> ClickHouse DB -> React analytics graphics."
+    },
+    "features": {
+      "core": ["Dynamic event ingestion API", "ClickHouse columnar metrics indexer"],
+      "advanced": ["Custom conversion funnel builder", "Real-time active users heatmap plotter"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "analytix/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS Elastic Beanstalk",
+      "containerization": "Docker Compose",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed real-time ClickHouse metrics analysis gateway processing 50M+ events daily in Go."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_03",
+    "title": "PassPortal: Enterprise Single-Sign-On (SSO) OAuth coordinator",
+    "tagline": "Federates client access using SAML 2.0 and OpenID Connect standards, mapping Active Directories to application hooks.",
+    "resumeScore": 94,
+    "placementScore": 93,
+    "innovationScore": 91,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["Node.js", "Passport.js", "Redis", "MongoDB"],
+    "problemStatement": {
+      "overview": "Managing employee log-ins across disparate corporate apps raises security breaches. PassPortal unifies access credentials routing.",
+      "targetAudience": "IT managers, corporate enterprise compliance, cybersecurity heads",
+      "userPersonas": ["IT Admin onboarding new staff across corporate portals"]
+    },
+    "systemArchitecture": {
+      "narrative": "Receives SAML request. Audits directory signatures. Signs JWT tokens passing tenant attributes details.",
+      "dataFlow": "App login request -> SAML redirect -> Directory validation -> Signed token delivery -> Secure session write."
+    },
+    "features": {
+      "core": ["OpenID Connect protocol router", "JWT cryptographical signer"],
+      "advanced": ["Dynamic user roles permissions mapper", "Anomaly location log-in blocking engine"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "passportal/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS ECS",
+      "containerization": "Docker image setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built OpenID Connect security identity federation hub managing tokens in MongoDB."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_04",
+    "title": "FeedbackLoop: Interactive User Feedback board and Roadmap portal",
+    "tagline": "Allows customers suggest features, vote on roadmap cards, and receive automatic email status updates.",
+    "resumeScore": 88,
+    "placementScore": 91,
+    "innovationScore": 87,
+    "difficulty": "intermediate",
+    "duration": "1_week",
+    "domain": "saas",
+    "techStack": ["Ruby on Rails", "PostgreSQL", "Tailwind CSS", "Redis"],
+    "problemStatement": {
+      "overview": "SaaS builders struggle to coordinate feature requests. FeedbackLoop maps feature boards where users request, upvote, and track changes.",
+      "targetAudience": "SaaS founders, customer success teams, product managers",
+      "userPersonas": ["SaaS user wishing custom import formatting fixes"]
+    },
+    "systemArchitecture": {
+      "narrative": "A standard monolithic MVC. Uses Redis queues to manage transactional emails whenever a roadmap status card updates.",
+      "dataFlow": "User suggestion -> DB write -> Upvote trigger -> Status update -> Redis task queue -> SendGrid email notification."
+    },
+    "features": {
+      "core": ["Interactive suggestion board page", "User upvoting system logic"],
+      "advanced": ["Automatic slack notifications publisher", "Public roadmap status timeline visual"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "feedbackloop/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Fly.io + Supabase PostgreSQL",
+      "containerization": "Flyctl standalone config",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed user feedback and roadmap portal utilizing Rails, PostgreSQL, and Redis background queues."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_05",
+    "title": "NotionSync: Collaborative Document Workspace with Offline replication",
+    "tagline": "Renders collaborative page editors that save modifications local-first, syncing to Postgres on reconnection.",
+    "resumeScore": 93,
+    "placementScore": 92,
+    "innovationScore": 94,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["TypeScript", "React", "Yjs", "PostgreSQL", "IndexedDB"],
+    "problemStatement": {
+      "overview": "Standard text editors lose modifications when internet drops. NotionSync merges simultaneous edits client-side using CRDTs.",
+      "targetAudience": "Remote teams, content creators, productivity applications",
+      "userPersonas": ["Writer editing documentation on a flight"]
+    },
+    "systemArchitecture": {
+      "narrative": "Updates write locally to IndexedDB. Synced edits transmit to backend web sockets server merging states in Postgres.",
+      "dataFlow": "Editor typing -> local IndexedDB update -> websocket sync -> conflicts resolver -> Postgres write."
+    },
+    "features": {
+      "core": ["CRDT text editor canvas", "IndexedDB client store wrapper"],
+      "advanced": ["Dynamic user editing cursor visual", "Historical revisions restore point loop"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "notionsync/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Heroku",
+      "containerization": "Docker setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built offline-first real-time document editor utilizing Yjs, IndexedDB, and PostgreSQL."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_06",
+    "title": "CRMFlow: Automated Customer Outbox and Email Pipeline",
+    "tagline": "A SaaS CRM system managing customer workflows, transactional sequences, and automated triggers.",
+    "resumeScore": 91,
+    "placementScore": 92,
+    "innovationScore": 89,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["Python", "Django", "Celery", "PostgreSQL", "Redis"],
+    "problemStatement": {
+      "overview": "Sales teams duplicate efforts sending follow-ups manually. CRMFlow builds automation node trees triggering sequences based on user signs.",
+      "targetAudience": "Sales teams, marketing agencies, SaaS growth operations",
+      "userPersonas": ["Sales representative tracking lead conversions"]
+    },
+    "systemArchitecture": {
+      "narrative": "Triggers background tasks using Celery. Schedules email waves relative to lead sign-up status updates.",
+      "dataFlow": "Lead signup -> CRMFlow trigger event -> Celery worker task -> wait delay -> send email sequence wave."
+    },
+    "features": {
+      "core": ["Customer timeline tracker board", "Automation workflow builder"],
+      "advanced": ["Visual sequence builder tree canvas", "Email open metrics tracking checker"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "crmflow/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS Elastic Beanstalk",
+      "containerization": "Docker image deployment",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered transaction sequence triggers using Django, Celery background tasks, and Redis store."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_07",
+    "title": "SignDoc: Relational Digital Document signature hub",
+    "tagline": "Enables corporate users upload PDFs, place signatures anchors, and securely invite clients sign documents.",
+    "resumeScore": 92,
+    "placementScore": 93,
+    "innovationScore": 90,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["Go", "React", "PDF-lib", "PostgreSQL"],
+    "problemStatement": {
+      "overview": "Obtaining formal document approvals is slow. SignDoc writes signature overlays directly into PDF file coordinates.",
+      "targetAudience": "Legal offices, real estate, HR coordinators",
+      "userPersonas": ["HR manager sending employment offer letters"]
+    },
+    "systemArchitecture": {
+      "narrative": "Invites clients. Renders signatures canvas overlay. Appends image pixels metadata directly into target PDF files.",
+      "dataFlow": "Upload PDF -> Mark anchors -> Send signing invite link -> Sign on canvas -> Embed signature binary -> Save PDF."
+    },
+    "features": {
+      "core": ["PDF anchor mapper tool", "Signatures drawing canvas panel"],
+      "advanced": ["Cryptographic PDF authenticity trace hash", "Audit logging trail timeline"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "signdoc/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Render",
+      "containerization": "Docker container build",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed secure signature overlay engine in Go processing vector PDF coordinate writes."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_08",
+    "title": "SupportGrid: Realtime Client Support Chat panel and ticketing Hub",
+    "tagline": "Renders live chat widgets feeding tickets to a centralized dashboard via WebSockets.",
+    "resumeScore": 90,
+    "placementScore": 92,
+    "innovationScore": 88,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["Node.js", "React", "Socket.io", "MongoDB"],
+    "problemStatement": {
+      "overview": "Handling client problems via email creates communication drops. SupportGrid provides instant chat widget connections.",
+      "targetAudience": "E-commerce stores, SaaS websites, customer success managers",
+      "userPersonas": ["User seeking payment billing error refunds"]
+    },
+    "systemArchitecture": {
+      "narrative": "Socket.io coordinates communication. Chats connect to support personnel. Ticketing metrics log to MongoDB store.",
+      "dataFlow": "Chat client entry -> Socket.io connection -> Support dashboard routing -> Live conversation panel."
+    },
+    "features": {
+      "core": ["Client chat popup widget", "Live support dashboard panel"],
+      "advanced": ["Realtime typing notifications manager", "Automatic sentiment analyzer checks"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "supportgrid/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Railway",
+      "containerization": "Node container setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built real-time client support socket dashboard utilizing Socket.io and MongoDB database."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_09",
+    "title": "UsageMeter: SaaS API usage limit check and Billing dashboard",
+    "tagline": "Tracks SaaS customer request volumes dynamically, enforcing access limit blocks.",
+    "resumeScore": 94,
+    "placementScore": 93,
+    "innovationScore": 92,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "saas",
+    "techStack": ["Go", "Redis", "Kafka", "PostgreSQL"],
+    "problemStatement": {
+      "overview": "Metering API usage dynamically on heavy traffic creates massive database writes database bottlenecks. UsageMeter aggregates metrics in memory.",
+      "targetAudience": "SaaS API developers, billing teams, infrastructure managers",
+      "userPersonas": ["SaaS architect tracking API key query quotas"]
+    },
+    "systemArchitecture": {
+      "narrative": "Fast redis middleware intercepts requests, checks counts and writes increments. Compiles batches to PostgreSQL hourly.",
+      "dataFlow": "Client query -> Redis key quote check -> request count increment -> Kafka publish -> PG batch update."
+    },
+    "features": {
+      "core": ["Redis rate limiting quota middleware", "Realtime dashboard charts visual"],
+      "advanced": ["Automatic stripe invoice creator integrations", "Dynamic access token key generator"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "usagemeter/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS EKS Cluster",
+      "containerization": "Multi-replica kubernetes configs",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed API billing usage limiter monitoring 2M+ daily requests utilizing Go and Redis."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_saas_10",
+    "title": "CourseHub: Modular Learning Management portal with subscriptions",
+    "tagline": "Enables creators publish video programs, gating access behind subscriber roles.",
+    "resumeScore": 89,
+    "placementScore": 91,
+    "innovationScore": 86,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "saas",
+    "techStack": ["TypeScript", "Next.js", "Prisma", "PostgreSQL", "Mux Video"],
+    "problemStatement": {
+      "overview": "Online teachers need simple frameworks upload videos, host pages, and process subscriber payments securely.",
+      "targetAudience": "Course creators, educators, schools",
+      "userPersonas": ["Tutor setting up a subscription programming class"]
+    },
+    "systemArchitecture": {
+      "narrative": "Monages payments using Stripe. Connects video streaming coordinates using Mux API structures. Renders progress dashboards.",
+      "dataFlow": "User registers -> Subscriber roles payment -> Mux video streaming API -> Video dashboard view -> progress save."
+    },
+    "features": {
+      "core": ["Subscriber gate routing", "Video player integration modules"],
+      "advanced": ["Dynamic certificate PDF compiler engine", "Interactive lesson quiz creator panel"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "coursehub/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Vercel",
+      "containerization": "Serverless setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed video LMS portal integrating Next.js, Stripe checkouts, and Mux Video APIs."],
+      "interviewQuestions": []
+    }
+  }
+]

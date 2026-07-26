@@ -1,0 +1,437 @@
+[
+  {
+    "id": "t_auto_01",
+    "title": "AutoOps: Automated Deployment and Canary Testing Operator",
+    "tagline": "A Kubernetes controller automating canary releases using real-time Prometheus error rates to trigger rolling updates or rollbacks.",
+    "resumeScore": 96,
+    "placementScore": 93,
+    "innovationScore": 95,
+    "difficulty": "production_enterprise",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["TypeScript", "Kubernetes API", "Prometheus", "Grafana", "Go"],
+    "problemStatement": {
+      "overview": "Manual deployments run severe crash risks. AutoOps monitors live telemetry data during release steps, incrementally driving traffic between old and new pod instances and halting progress if exceptions spike.",
+      "targetAudience": "DevOps Teams, Release Managers, Cloud Architects",
+      "userPersonas": [
+        "Site Reliability Engineer enforcing automated rollover standards.",
+        "Developer wanting stress-free deployment pushes."
+      ]
+    },
+    "systemArchitecture": {
+      "narrative": "A custom controller loops in Kubernetes. It manages Canary resource manifests and modifies proxy weights to direct traffic increments.",
+      "dataFlow": "New Canary version -> Traffic weighted 10% -> Fetch Prometheus query -> Error rates healthy -> Increase weight -> Complete rollout."
+    },
+    "features": {
+      "core": [
+        "Canary Custom Resource Definition (CRD) schema.",
+        "Traffic weights coordinator controller.",
+        "Prometheus API scraping helper."
+      ],
+      "advanced": [
+        "Automatic slack event alert dispatcher.",
+        "Instant emergency rollback system."
+      ]
+    },
+    "databaseApiSpecification": {
+      "tables": [
+        {
+          "name": "deployments",
+          "columns": ["id (UUID) - PK", "name (VARCHAR)", "status (VARCHAR)", "canary_weight (INT)"],
+          "description": "Tracks progress of active canary releases."
+        }
+      ],
+      "endpoints": []
+    },
+    "directoryStructure": "autoops/\n├── operator/            # Go/Node operator loop\n├── crd/                 # Custom Resource Definitions\n└── package.json",
+    "roadmap": [
+      {
+        "phase": "Phase 1",
+        "title": "CRD and Controller Setup",
+        "tasks": [
+          "Define custom API specs for Kubernetes custom resources.",
+          "Connect controller loops to watch resource changes."
+        ]
+      }
+    ],
+    "deploymentCiCd": {
+      "host": "Self-hosted Kubernetes Cluster",
+      "containerization": "Multi-architecture Docker build script.",
+      "steps": [
+        "Compile container image.",
+        "Apply manifests to Kubernetes target using kubectl."
+      ]
+    },
+    "placementArtifacts": {
+      "resumeBullets": [
+        "Engineered a Kubernetes Operator in TypeScript to automate canary rollouts, dropping incident recovery times by 80% through automated rollback logic."
+      ],
+      "interviewQuestions": [
+        {
+          "question": "What metric-evaluation window did you use for canary validations?",
+          "answerHint": "Explain using a sliding-window duration (e.g. 5 minutes) to calculate average error ratios to guard against telemetry noise."
+        }
+      ]
+    }
+  },
+  {
+    "id": "t_auto_02",
+    "title": "BuildGuard: Continuous Integration Security Scanner",
+    "tagline": "A Docker-based execution pipeline runner statically analyzing project files for exposed API credentials and vulnerability patterns.",
+    "resumeScore": 92,
+    "placementScore": 91,
+    "innovationScore": 93,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["Go", "Docker API", "Trivy", "PostgreSQL"],
+    "problemStatement": {
+      "overview": "Exposing API keys in code commits creates data leaks. BuildGuard intercepts git pushes, runs scans inside ephemeral containers, and reports bugs.",
+      "targetAudience": "DevOps Engineers, cybersecurity teams, team leads",
+      "userPersonas": ["Security analyst auditing repository branches for leaks"]
+    },
+    "systemArchitecture": {
+      "narrative": "Git hooks trigger scans. Spawn isolated docker runtime container. Compiles output logs and outputs PDF reports.",
+      "dataFlow": "Commit push event -> Webhook receiver -> Docker container spawn -> Static file analysis -> PDF report compile."
+    },
+    "features": {
+      "core": ["Git webhook listener daemon", "Docker API container runner"],
+      "advanced": ["Secret keys entropy detection scanner", "Dynamic vulnerability dashboard graphs"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "buildguard/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "GCP VM instance",
+      "containerization": "Docker Compose",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed an automated repository CI security auditor utilizing Go, Docker API, and Postgres."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_03",
+    "title": "AutoScale: Cloud VM dynamic scaling coordinator",
+    "tagline": "Polls cloud metrics and schedules nodes scaling operations according to CPU loads trends.",
+    "resumeScore": 93,
+    "placementScore": 92,
+    "innovationScore": 91,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["Python", "FastAPI", "Prometheus", "AWS SDK"],
+    "problemStatement": {
+      "overview": "Standard cloud scaling features are slow to respond to traffic spikes. AutoScale tracks trends forecasting load requirements.",
+      "targetAudience": "SaaS infrastructure engineers, cloud cost optimization leads",
+      "userPersonas": ["SRE seeking to minimize idle EC2 server costs"]
+    },
+    "systemArchitecture": {
+      "narrative": "Fetches Prometheus performance records. Calculates moving average cpu values. Triggers AWS Auto Scaling Groups commands.",
+      "dataFlow": "Telemetry fetch -> CPU trends analysis -> Scaling decision -> AWS SDK API call -> Server instance spawn."
+    },
+    "features": {
+      "core": ["AWS client interface integration", "Prometheus performance query scraper"],
+      "advanced": ["Moving average load forecast calculator", "Scales events Slack notifications dispatcher"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "autoscale/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS Elastic Beanstalk",
+      "containerization": "Docker setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built dynamic scaling coordinator using Python, AWS SDK, and Prometheus metrics forecasts."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_04",
+    "title": "StatusSage: Real-time Infrastructure status panel page",
+    "tagline": "Renders modern status pages, checking endpoints health and displaying history incident logs.",
+    "resumeScore": 88,
+    "placementScore": 90,
+    "innovationScore": 86,
+    "difficulty": "intermediate",
+    "duration": "1_week",
+    "domain": "automation",
+    "techStack": ["TypeScript", "React", "PostgreSQL", "Cron Service"],
+    "problemStatement": {
+      "overview": "Outages occur without immediate customer warning boards. StatusSage regularly tests routes, updating a public status card list.",
+      "targetAudience": "SaaS operators, IT teams, small companies leads",
+      "userPersonas": ["Customer check support portal during a service outage"]
+    },
+    "systemArchitecture": {
+      "narrative": "A cron job tests http targets. Logs success/fail codes. Sends metrics updates to database. React renders logs timeline.",
+      "dataFlow": "Cron query health -> API endpoint checks -> DB write logs -> Public React portal load."
+    },
+    "features": {
+      "core": ["Cron endpoint ping engine", "Public status dashboard panel"],
+      "advanced": ["Realtime incident status updates logger", "Transactional emails subscriber alerts"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "statussage/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Fly.io",
+      "containerization": "Standalone node process",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed an automated infrastructure health status portal utilizing Node and Supabase Postgres."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_05",
+    "title": "EnvSync: Secure multi-server environment variables replicator",
+    "tagline": "Synchronizes .env variables across development clusters, securing variables at rest using AES-256.",
+    "resumeScore": 91,
+    "placementScore": 92,
+    "innovationScore": 90,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["Rust", "AES-256", "SQLite", "TCP sockets"],
+    "problemStatement": {
+      "overview": "Syncing environment variables manually across team development workstations causes security credentials drops.",
+      "targetAudience": "SDE teams, DevOps leads, security managers",
+      "userPersonas": ["Lead dev updating private database credentials keys"]
+    },
+    "systemArchitecture": {
+      "narrative": "CLI client pushes variables. Server encrypts payloads. Follower nodes pull updates dynamically.",
+      "dataFlow": "CLI variable set -> local encryption (AES-256) -> TLS TCP socket send -> Master Server write -> Worker node sync."
+    },
+    "features": {
+      "core": ["Cryptographical AES-256 secure wrapper", "TCP network socket channel"],
+      "advanced": ["Dynamic variable audit log timeline", "Conflict resolution diff panel visual"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "envsync/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "DigitalOcean droplets",
+      "containerization": "Binary installation wrapper",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed EnvSync variables replicator CLI utilizing Rust, TLS TCP sockets, and AES-256."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_06",
+    "title": "DeployNode: Static Website deployment coordinator CLI",
+    "tagline": "Compiles static web files, pushing assets to AWS S3 CDNs in seconds.",
+    "resumeScore": 89,
+    "placementScore": 91,
+    "innovationScore": 88,
+    "difficulty": "intermediate",
+    "duration": "1_week",
+    "domain": "automation",
+    "techStack": ["Node.js", "Commander CLI", "AWS S3 Client", "Archiver"],
+    "problemStatement": {
+      "overview": "Uploading build folders manually using web consoles is tedious. DeployNode compresses builds and pushes updates directly.",
+      "targetAudience": "Web Developers, designers, static site builders",
+      "userPersonas": ["Designer deploying portfolio static pages updates"]
+    },
+    "systemArchitecture": {
+      "narrative": "A node CLI app. Bundles target folders into zip packages. Utilizes S3 multipart API to upload files.",
+      "dataFlow": "Terminal build build -> DeployNode run -> ZIP compression -> S3 multipart API upload -> CDN invalidation."
+    },
+    "features": {
+      "core": ["S3 bucket connection client", "Zipping directories utilities"],
+      "advanced": ["CloudFront cache invalidator script", "Dynamic upload progress logs terminal bar"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "deploynode/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "NPM binary executable",
+      "containerization: ": "Standalone scripts wrap",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Created S3 static deployment script deploying assets and invalidating CloudFront caches."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_07",
+    "title": "KubeMon: Light Kubernetes Pod metrics logger dashboard",
+    "tagline": "Polls pod health metrics, rendering real-time maps of resource usage in local browsers.",
+    "resumeScore": 94,
+    "placementScore": 92,
+    "innovationScore": 93,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["Go", "React", "K8s Client-Go", "InfluxDB"],
+    "problemStatement": {
+      "overview": "Standard dashboards require heavy cluster installations. KubeMon runs a light process connecting local Kubeconfig files.",
+      "targetAudience": "DevOps Engineers, Kubernetes SRE leads, application developers",
+      "userPersonas": ["Kubernetes developer debugging OOMKilled pod incidents"]
+    },
+    "systemArchitecture": {
+      "narrative": "Reads local credentials. Connects Go API client. Pipes CPU, Memory metrics to local InfluxDB. React displays metrics maps.",
+      "dataFlow": "Load Kubeconfig -> Client-Go metrics scrape -> InfluxDB insert -> React dashboard metrics view."
+    },
+    "features": {
+      "core": ["Kubernetes Client-Go API listener", "InfluxDB local query logger"],
+      "advanced": ["Kubernetes namespace topological map graph", "OOMKilled pods instant Slack alerts"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "kubemon/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Local global terminal tool",
+      "containerization": "Standalone package setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered KubeMon pod diagnostic tool scraping metrics using Client-Go and InfluxDB."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_08",
+    "title": "LogSifter: High-frequency logs parser and notifier daemon",
+    "tagline": "Scans application log files, triggering slack warnings when error counts spike.",
+    "resumeScore": 90,
+    "placementScore": 91,
+    "innovationScore": 89,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["Go", "Tail-logs", "PostgreSQL", "Slack API"],
+    "problemStatement": {
+      "overview": "Reviewing text logs during outages is slow. LogSifter monitors updates, matching error regex strings dynamically.",
+      "targetAudience": "Backend developers, system admins, support engineers",
+      "userPersonas": ["Developer verifying payment system stability after deployment"]
+    },
+    "systemArchitecture": {
+      "narrative": "An active system service daemon. Talls active file updates. Compiles metrics logs. Dispatches warnings.",
+      "dataFlow": "Log file append -> LogSifter regex search -> Database metrics update -> Threshold trigger -> Slack alert message."
+    },
+    "features": {
+      "core": ["Tails log updates utility", "Regex match compiler engine"],
+      "advanced": ["Interactive configuration regex editor GUI", "Dynamic error volumes dashboard charts"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "logsifter/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Ubuntu VPS daemon service",
+      "containerization": "Systemd config",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed logs audit parser in Go executing regex pattern scans and Slack warning triggers."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_09",
+    "title": "CloudLock: Cloud resource security compliance audit framework",
+    "tagline": "Audits AWS resource tags and IAM configurations, triggering alerts for public S3 buckets.",
+    "resumeScore": 95,
+    "placementScore": 94,
+    "innovationScore": 93,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "automation",
+    "techStack": ["Python", "Boto3 AWS Client", "SQLite", "FastAPI"],
+    "problemStatement": {
+      "overview": "Corporate cloud settings drift over time. CloudLock runs scheduled checks auditing network interfaces security rules.",
+      "targetAudience": "Information Security Managers, cloud auditors, DevOps leads",
+      "userPersonas": ["Cloud Security Auditor checking IAM policy compliance details"]
+    },
+    "systemArchitecture": {
+      "narrative": "Scheduled loops run checks. Fetches resources maps. Matches tag requirements. Logs drifts details.",
+      "dataFlow": "Audit trigger -> Boto3 calls -> Scan configs -> Match security schemas rules -> Log drifts reports."
+    },
+    "features": {
+      "core": ["AWS Boto3 query collector", "SQLite compliance metrics logger"],
+      "advanced": ["Resource tag compliance checker engine", "Public S3 bucket access blocker action"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "cloudlock/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS Lambda function",
+      "containerization": "Serverless packaging",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Architected AWS resource compliance scanner utilizing Python, Boto3 APIs, and AWS Lambda triggers."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_auto_10",
+    "title": "CertFlow: Automated SSL Cert creator and router helper",
+    "tagline": "Queries Let's Encrypt APIs, placing SSL cert configurations in Nginx coordinates dynamically.",
+    "resumeScore": 92,
+    "placementScore": 93,
+    "innovationScore": 90,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "automation",
+    "techStack": ["Go", "ACME Protocol", "Nginx API", "Cron Service"],
+    "problemStatement": {
+      "overview": "Manual domain SSL configuration drops services when certificates expire. CertFlow manages domain checks and auto-reloads proxies.",
+      "targetAudience": "System administrators, hosting providers, backend engineers",
+      "userPersonas": ["IT Admin managing certificate updates for 50+ client domains"]
+    },
+    "systemArchitecture": {
+      "narrative": "A Go service. Performs Let's Encrypt DNS/HTTP challenge checks. Saves certs keys and reloads nginx configs.",
+      "dataFlow": "Check cert dates -> Trigger ACME challenge -> DNS verification -> Save Cert files -> Reload Nginx config."
+    },
+    "features": {
+      "core": ["ACME protocol certificate requester", "Nginx configuration reload helper"],
+      "advanced": ["Automatic DNS challenge api driver integration", "Certificate expiry dashboard calendar views"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "certflow/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Ubuntu VPS instance",
+      "containerization": "Standalone package binary",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built automated Let's Encrypt ACME certificate router in Go, automating Nginx proxy reloads."],
+      "interviewQuestions": []
+    }
+  }
+]

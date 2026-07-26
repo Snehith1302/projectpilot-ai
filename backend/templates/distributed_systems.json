@@ -1,0 +1,445 @@
+[
+  {
+    "id": "t_dist_01",
+    "title": "DistriQueue: High-Performance Distributed Serverless Task Broker",
+    "tagline": "An event-driven distributed task execution broker with custom consensus mechanisms, sliding-window rate limiting, and failure retry backoffs.",
+    "resumeScore": 95,
+    "placementScore": 94,
+    "innovationScore": 93,
+    "difficulty": "production_enterprise",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["Go", "Rust", "Redis", "gRPC", "Docker"],
+    "problemStatement": {
+      "overview": "Traditional task queues rely heavily on databases that form operational bottlenecks. DistriQueue scales horizontally by deploying worker nodes that coordinate tasks over gRPC, balancing loads dynamically without centralized failure points.",
+      "targetAudience": "Infrastructure engineering teams, high-traffic SaaS operators",
+      "userPersonas": [
+        "SaaS system administrator looking for lightweight queue setups.",
+        "DevOps lead seeking to limit container overhead."
+      ]
+    },
+    "systemArchitecture": {
+      "narrative": "Nodes form a peer cluster using a lightweight custom gossip protocol. Tasks are partitioned using consistent hashing across available node instances.",
+      "dataFlow": "Client Task Submission -> Hash Ring Router -> Assign Node -> Write to Local Redis Cache -> Background Worker Execution."
+    },
+    "features": {
+      "core": [
+        "Consistent Hash Ring routing algorithm.",
+        "gRPC Node Communication.",
+        "Dead Letter Queue (DLQ) automatic routing."
+      ],
+      "advanced": [
+        "Custom Gossip Protocol for cluster discovery.",
+        "Dynamic Backpressure Throttle controls."
+      ]
+    },
+    "databaseApiSpecification": {
+      "tables": [
+        {
+          "name": "workers",
+          "columns": ["worker_id (UUID) - PK", "host_address (VARCHAR)", "status (VARCHAR)", "active_tasks (INT)"],
+          "description": "Stores live heartbeats of node clusters."
+        }
+      ],
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/tasks/enqueue",
+          "requestBody": "{\"taskName\": \"compress_image\", \"payload\": \"s3://bucket/img.png\"}",
+          "responseBody": "{\"taskId\": \"task-8291\", \"nodeAddress\": \"10.0.1.20\"}",
+          "description": "Pushes tasks to node coordinates."
+        }
+      ]
+    },
+    "directoryStructure": "distrique/\n├── broker/\n│   ├── main.go\n│   ├── ring/             # Hash ring implementation\n│   └── worker/           # Background execution loops\n└── Cargo.toml",
+    "roadmap": [
+      {
+        "phase": "Phase 1",
+        "title": "Consistent Hashing Ring",
+        "tasks": [
+          "Create hash ring utility.",
+          "Establish node heartbeat channels."
+        ]
+      }
+    ],
+    "deploymentCiCd": {
+      "host": "AWS EKS (Kubernetes)",
+      "containerization": "Distroless light container build files.",
+      "steps": [
+        "Compile statically linked binary.",
+        "Deploy local Kubernetes manifest."
+      ]
+    },
+    "placementArtifacts": {
+      "resumeBullets": [
+        "Architected a zero-dependency distributed task scheduler in Go using consistent hashing, lowering message dispatch latencies by 35%."
+      ],
+      "interviewQuestions": [
+        {
+          "question": "What happens if a node drops offline mid-execution?",
+          "answerHint": "Explain how heartbeat thresholds trigger ring rebalancing, routing unacknowledged tasks to backup worker instances."
+        }
+      ]
+    }
+  },
+  {
+    "id": "t_dist_02",
+    "title": "RaftVault: Highly Available Distributed Secret Key-Value Store",
+    "tagline": "Implements Raft consensus protocol from scratch to replicate encrypted secrets across multi-datacenter nodes safely.",
+    "resumeScore": 96,
+    "placementScore": 95,
+    "innovationScore": 94,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "distributed_systems",
+    "techStack": ["Go", "Raft Protocol", "gRPC", "BoltDB"],
+    "problemStatement": {
+      "overview": "Secrets databases form soft target security vaults. RaftVault encrypts properties at rest, replicating states over a Raft cluster nodes pool.",
+      "targetAudience": "Cloud Security Teams, infrastructure administrators, financial software companies",
+      "userPersonas": ["Security officer protecting database connection credentials"]
+    },
+    "systemArchitecture": {
+      "narrative": "Elects raft leader. Commits log entries dynamically. Syncs replication states securely to follower node databases.",
+      "dataFlow": "Client write -> Raft Leader -> Append Entries to Followers -> Quorum Consensus -> Commit Secret to local BoltDB."
+    },
+    "features": {
+      "core": ["Custom Raft Leader Election machine", "BoltDB transactional key store"],
+      "advanced": ["Dynamic cluster memberships configuration", "TLS gRPC secure communication channels"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "raftvault/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Google Cloud GKE Cluster",
+      "containerization": "Docker setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed custom Raft replication secret store database handling quorum failure rollbacks in Go."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_03",
+    "title": "DistriCache: Fault-Tolerant Memory Caching Cluster",
+    "tagline": "Consistent-hashing partitioned caching cluster with peer replication and LRU memory eviction rules.",
+    "resumeScore": 93,
+    "placementScore": 92,
+    "innovationScore": 91,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["Rust", "Tokio", "gRPC", "HashRing"],
+    "problemStatement": {
+      "overview": "Single cache nodes form system failure risk caps. DistriCache partitions cache segments, auto-replicating node contents to adjacent peers.",
+      "targetAudience": "High performance web teams, gaming backend engineers",
+      "userPersonas": ["SaaS infrastructure engineer mapping DB scaling solutions"]
+    },
+    "systemArchitecture": {
+      "narrative": "Rust cluster nodes communicate using gRPC. Injects partitioned writes across hash coordinates. Evicts keys using LRU policies.",
+      "dataFlow": "Write cache key -> Consistent hashing lookup -> Target node write -> Async peer replicate write -> Success check."
+    },
+    "features": {
+      "core": ["Consistent hashing selector module", "gRPC cache peer sync"],
+      "advanced": ["LRU key eviction cache machine", "Failover peer takeover coordinator"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "districache/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "DigitalOcean Droplets",
+      "containerization": "Systemd service wrapper",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered distributed partition cache system in Rust lower read latency by 45%."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_04",
+    "title": "StreamNode: Event Log Streaming Broker",
+    "tagline": "Lightweight pub-sub messaging streaming broker executing disk-backed log appending structures.",
+    "resumeScore": 94,
+    "placementScore": 93,
+    "innovationScore": 92,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["Go", "TCP sockets", "Protobuf", "BoltDB"],
+    "problemStatement": {
+      "overview": "Event message queues are highly resource heavy. StreamNode writes logs sequentially to disk files, matching topic offsets in seconds.",
+      "targetAudience": "Microservices developers, IoT sensor log gatherers, data pipelines leads",
+      "userPersonas": ["IoT data engineer tracing high frequency sensors logs"]
+    },
+    "systemArchitecture": {
+      "narrative": "Receives payloads via custom TCP protocol. Appends sequential messages to segment logs. Tracks consumers cursor indices.",
+      "dataFlow": "Producer TCP push -> StreamNode segment appender -> Index update -> Consumer TCP pull request -> Read disk bytes."
+    },
+    "features": {
+      "core": ["TCP socket broker daemon", "Disk segment sequential log writer"],
+      "advanced": ["Relational topic partitions replica loop", "Topic segment cleanup compactor engine"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "streamnode/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS EC2 instance",
+      "containerization": "Docker image",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built high-performance custom pub-sub streaming log broker handling 100k+ TPS on Go."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_05",
+    "title": "GraphCore: Distributed Graph Database Processing Engine",
+    "tagline": "Scalable graph query execution engine running relational BFS and PageRank queries across multiple partition nodes.",
+    "resumeScore": 96,
+    "placementScore": 94,
+    "innovationScore": 95,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "distributed_systems",
+    "techStack": ["Java", "Scala", "Akka", "Neo4j"],
+    "problemStatement": {
+      "overview": "Evaluating graph page ranks is extremely compute heavy on single server limits. GraphCore partitions vertices across cluster actor nodes.",
+      "targetAudience": "Network analysts, search database developers, AI knowledge graph architects",
+      "userPersonas": ["Search analyst evaluating page rankings paths"]
+    },
+    "systemArchitecture": {
+      "narrative": "Akka actors run nodes. Distributes computation messages dynamically. Consolidates calculations at coordinator node.",
+      "dataFlow": "Upload Graph data -> Hash Partition vertices -> Akka Actor nodes -> PageRank compute cycles -> Akka Message exchange -> consolidate results."
+    },
+    "features": {
+      "core": ["Akka actor node coordinator", "Hash Partition vertex mapper"],
+      "advanced": ["PageRank processing framework", "Dynamic failures node reassignment loop"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "graphcore/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Azure AKS Kubernetes",
+      "containerization": "Multi-replica charts config",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed distributed graph PageRank query compiler utilizing Scala and Akka Actor systems."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_06",
+    "title": "MeshLock: Distributed Coordinator and Mutual Exclusion Lock",
+    "tagline": "Implements lease locking consensus and lock discovery nodes over custom UDP gossip protocols.",
+    "resumeScore": 92,
+    "placementScore": 91,
+    "innovationScore": 93,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["Go", "UDP sockets", "LevelDB", "gRPC"],
+    "problemStatement": {
+      "overview": "Microservice schedulers execute double triggers if lock managers crash. MeshLock uses dynamic voting algorithms to ensure unique locks.",
+      "targetAudience": "Distributed systems developers, database transaction planners",
+      "userPersonas": ["FinTech architect ensuring unique payment triggers"]
+    },
+    "systemArchitecture": {
+      "narrative": "UDP gossip maintains cluster nodes state. gRPC locks requests require majority approval voting to lease.",
+      "dataFlow": "Lock request -> gRPC leader -> Vote requests to peers -> Quorum success -> Lease saved to LevelDB."
+    },
+    "features": {
+      "core": ["UDP gossip network engine", "Majority voting coordinator"],
+      "advanced": ["Automatic deadlocks detection logic", "Dynamic node network split split-brain analyzer"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "meshlock/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "On-premise Docker server",
+      "containerization: ": "Docker compose config",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Created distributed UDP consensus lease locks coordinator with automatic split-brain resolution."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_07",
+    "title": "ProxyDNS: Distributed Load-Balancing DNS Server",
+    "tagline": "Dynamic DNS server routing users queries based on geo-location and local system latency metrics.",
+    "resumeScore": 91,
+    "placementScore": 92,
+    "innovationScore": 90,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["Rust", "Tokio", "DNS Protocol", "SQLite"],
+    "problemStatement": {
+      "overview": "Static DNS setups route queries to dead nodes. ProxyDNS pings servers dynamically, mapping requests to the fastest healthy target.",
+      "targetAudience": "CDN developers, network operations, cloud administrators",
+      "userPersonas": ["SRE engineer mapping traffic CDNs routes"]
+    },
+    "systemArchitecture": {
+      "narrative": "A DNS server listening on port 53. Resolves queries locally, comparing target backend health data to SQLite routes configurations.",
+      "dataFlow": "DNS Query -> DNS Protocol parser -> geolocation check -> latency db query -> optimal target ip output."
+    },
+    "features": {
+      "core": ["DNS protocol network daemon", "Realtime backend node ping scanner"],
+      "advanced": ["GeoIP dataset SQLite router", "DNS poisoning attack block guard"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "proxydns/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Vultr VPS instance",
+      "containerization": "Systemd startup wrap",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed GeoIP DNS balancing server in Rust utilizing Tokio, routing 10k+ requests dynamically."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_08",
+    "title": "LedgerSync: Proof-of-Authority Distributed blockchain ledger",
+    "tagline": "A lightweight private ledger implementing Proof-of-Authority transaction block replication.",
+    "resumeScore": 95,
+    "placementScore": 93,
+    "innovationScore": 96,
+    "difficulty": "production_enterprise",
+    "duration": "1_2_months",
+    "domain": "distributed_systems",
+    "techStack": ["Python", "FastAPI", "Cryptography", "SQLite"],
+    "problemStatement": {
+      "overview": "Supply chain partners require unique ledger blocks verify logs without heavy mining hardware requirements.",
+      "targetAudience": "Enterprise supply chain administrators, private networks users",
+      "userPersonas": ["Logistics auditor verifying cargo storage parameters"]
+    },
+    "systemArchitecture": {
+      "narrative": "Authorized signing nodes compile blocks. Follower nodes audit cryptographical signatures, adding blocks to database.",
+      "dataFlow": "Transaction submit -> Signer node validates -> Cryptographical block signature -> Block distribute -> SQLite commit."
+    },
+    "features": {
+      "core": ["Private transaction pool builder", "SHA-256 block cryptographical engine"],
+      "advanced": ["PoA validator node coordinator", "Transaction block explorer visual dashboard"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "ledgersync/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "AWS EC2 instance cluster",
+      "containerization": "Multi-container compose setup",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Engineered private Proof-of-Authority ledger in Python handling block encryption and signature checks."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_09",
+    "title": "NetMonitor: Distributed Network health and packet analyser",
+    "tagline": "Renders real-time graphs auditing latency, TCP retransmissions, and network drops across worker nodes.",
+    "resumeScore": 90,
+    "placementScore": 91,
+    "innovationScore": 89,
+    "difficulty": "intermediate",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["TypeScript", "Express", "Node-pcap", "InfluxDB"],
+    "problemStatement": {
+      "overview": "Detecting micro-outages in cluster networks requires packet monitors running non-invasively at connection coordinates.",
+      "targetAudience": "Network Engineers, SRE teams, operations leaders",
+      "userPersonas": ["Network engineer checking microservices drops"]
+    },
+    "systemArchitecture": {
+      "narrative": "Worker agents capture raw network packets. Compiles statistics metrics and sends entries to centralized InfluxDB store.",
+      "dataFlow": "Raw PCAP capture -> Packet parser agent -> Aggregated metrics -> InfluxDB write -> Dashboard visual panels."
+    },
+    "features": {
+      "core": ["PCAP packet capture network agent", "InfluxDB metrics log catalog"],
+      "advanced": ["Websocket alerts notification manager", "Latency anomaly neural detector"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "netmonitor/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "GCP VMs Cluster",
+      "containerization": "DaemonSet kubernetes config",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Built distributed network socket packet analyzer capturing TCP latency metrics in InfluxDB."],
+      "interviewQuestions": []
+    }
+  },
+  {
+    "id": "t_dist_10",
+    "title": "TaskSync: Distributed Multi-User Collaboration Sync Engine",
+    "tagline": "Implements CRDT (Conflict-Free Replicated Data Types) structures to synchronize database states dynamically across disconnected clients.",
+    "resumeScore": 94,
+    "placementScore": 92,
+    "innovationScore": 93,
+    "difficulty": "advanced",
+    "duration": "2_4_weeks",
+    "domain": "distributed_systems",
+    "techStack": ["TypeScript", "Yjs", "WebSockets", "IndexedDB"],
+    "problemStatement": {
+      "overview": "Collaborative drawing and text apps encounter server merge lockups. TaskSync uses CRDT vectors to merge changes client-side safely.",
+      "targetAudience": "Collaborative tools creators, offline-first applications developers",
+      "userPersonas": ["Web developer building an offline-first task editor"]
+    },
+    "systemArchitecture": {
+      "narrative": "Yjs handles document operations. Syncs states using WebSockets. Persists local state to browser IndexedDB store.",
+      "dataFlow": "Offline edits -> Yjs CRDT update -> IndexedDB write -> Network re-establish -> WebSocket sync -> Peer merge."
+    },
+    "features": {
+      "core": ["CRDT state delta manager", "WebSocket local proxy coordinator"],
+      "advanced": ["IndexedDB browser offline store", "Multi-peer conflicts solver GUI panel"]
+    },
+    "databaseApiSpecification": {
+      "tables": [],
+      "endpoints": []
+    },
+    "directoryStructure": "tasksync/",
+    "roadmap": [],
+    "deploymentCiCd": {
+      "host": "Heroku",
+      "containerization": "Node.js standard container",
+      "steps": []
+    },
+    "placementArtifacts": {
+      "resumeBullets": ["Developed CRDT editor sync engine utilizing WebSockets and Yjs for offline state reconciliation."],
+      "interviewQuestions": []
+    }
+  }
+]
