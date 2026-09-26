@@ -1,7 +1,7 @@
 import { SystemHealthResponse, ProjectGenerationInput, ProjectGenerationResponse } from 'shared';
 
-// Base URL is relative due to Vite dev-server proxy configurations
-const BASE_URL = '';
+// Base URL defaults to relative path for Vite dev-server proxy, overridden by VITE_API_BASE_URL in production
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export interface ApiResponse<T> {
   success: boolean;
