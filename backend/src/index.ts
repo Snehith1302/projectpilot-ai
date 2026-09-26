@@ -11,7 +11,9 @@ const app = express();
 
 // 1. Security & Global Request Context Middlewares
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: AppConfig.server.allowedOrigins
+}));
 app.use(express.json());
 app.use(requestIdMiddleware); // Assign unique ID to every request first
 app.use(loggerMiddleware);    // Log requests structured

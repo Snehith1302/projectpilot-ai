@@ -1,6 +1,23 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+const parseAllowedOrigins = (): string[] => {
+  const envOrigins = process.env.ALLOWED_ORIGINS;
+  if (envOrigins) {
+    return envOrigins
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter((origin) => origin.length > 0);
+  }
+
+  // Development defaults when ALLOWED_ORIGINS is missing
+  if (process.env.NODE_ENV === 'production') {
+    return [];
+  }
+
+  return ['http://localhost:3000', 'http://localhost:5173'];
+};
+
 export const AppConfig = {
   version: {
     app: '1.0.0',
@@ -27,6 +44,8 @@ export const AppConfig = {
     }
   },
   server: {
-    port: parseInt(process.env.PORT || '5000', 10)
+    port: parseInt(process.env.PORT || '5000', 10),
+    allowedOrigins: parseAllowedOrigins()
   }
 };
+
