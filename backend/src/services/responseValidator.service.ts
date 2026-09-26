@@ -27,9 +27,9 @@ export class ResponseValidatorService {
       const validated = ProjectGenerationResponseSchema.parse(parsed);
       return validated;
     } catch (e: any) {
-      if (e instanceof ZodError) {
+      if (e instanceof ZodError || e?.name === 'ZodError') {
         console.error('[ResponseValidator] Zod schema validation failed:', e.errors);
-        throw new Error(`JSON does not match the blueprint schema: ${e.errors.map(x => x.path.join('.') + ': ' + x.message).join(', ')}`);
+        throw new Error(`JSON does not match the blueprint schema: ${e.errors.map((x: any) => x.path.join('.') + ': ' + x.message).join(', ')}`);
       }
       if (e instanceof SyntaxError) {
         console.error('[ResponseValidator] JSON parsing syntax error:', e.message);

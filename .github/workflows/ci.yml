@@ -26,3 +26,6 @@ jobs:
 
     - name: Run Build (Shared, Backend, Frontend Compilation)
       run: npm run build
+
+    - name: Run Automated Tests
+      run: npm test
