@@ -46,6 +46,12 @@ export const AppConfig = {
   server: {
     port: parseInt(process.env.PORT || '5000', 10),
     allowedOrigins: parseAllowedOrigins()
+  },
+  rateLimit: {
+    generate: {
+      windowMs: parseInt(process.env.GENERATE_RATE_LIMIT_WINDOW_MS || '900000', 10),
+      max: parseInt(process.env.GENERATE_RATE_LIMIT_MAX || '10', 10)
+    }
   }
 };
 
