@@ -1,4 +1,4 @@
-import { ProjectBlueprint, ProjectGenerationResponse, SystemHealthResponse } from 'shared';
+import { ProjectBlueprint, ProjectGenerationResponse, SystemHealthResponse } from './index';
 
 export const getMockHealth = (): SystemHealthResponse => {
   return {
@@ -37,7 +37,7 @@ export const getMockHealth = (): SystemHealthResponse => {
 };
 
 export const getMockGenerationResponse = (input: any): ProjectGenerationResponse => {
-  const { skills, frameworks, difficulty } = input;
+  const { skills = [], frameworks = [], difficulty = 'advanced' } = input || {};
 
   const projects: ProjectBlueprint[] = [
     {

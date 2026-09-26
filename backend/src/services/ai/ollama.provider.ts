@@ -2,7 +2,6 @@ import axios from 'axios';
 import { AIProvider } from './provider.interface';
 import { ProviderHealthDetail } from 'shared';
 import { AppConfig } from '../../config/app.config';
-import { getMockGenerationResponse } from '../mock.service';
 
 export class OllamaProvider implements AIProvider {
   name = 'ollama';
