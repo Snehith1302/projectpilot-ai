@@ -80,9 +80,9 @@ ${project.directoryStructure}
 \`\`\`
 
 ## 5. Implementation Roadmap
-${project.roadmap.map(r => `
+${project.roadmap.map((r: ProjectBlueprint['roadmap'][number]) => `
 ### ${r.phase}: ${r.title}
-${r.tasks.map(t => `- [ ] ${t}`).join('\n')}
+${r.tasks.map((t: string) => `- [ ] ${t}`).join('\n')}
 `).join('\n')}
 
 ## 6. Deployment & CI/CD

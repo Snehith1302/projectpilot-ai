@@ -7,7 +7,7 @@ import ProjectResults from './components/ProjectResults';
 import ProjectDetails from './components/ProjectDetails';
 import SavedProjects from './components/SavedProjects';
 import SettingsPage from './components/SettingsPage';
-import { ProjectGenerationResponse } from 'shared';
+import { ProjectGenerationResponse, ProjectGenerationInput, ProjectBlueprint } from 'shared';
 
 // Layout wrapper for site structure
 function Layout({ children }: { children: React.ReactNode }) {
@@ -37,14 +37,14 @@ function ProjectDetailsWrapper({
   const navigate = useNavigate();
   
   // Search in current generation first, then saved blueprints local storage
-  let project = generationResponse?.projects.find(p => p.id === projectId);
+  let project: ProjectBlueprint | undefined = generationResponse?.projects.find((p: ProjectBlueprint) => p.id === projectId);
   
   if (!project) {
     const saved = localStorage.getItem('projectpilot_saved_blueprints');
     if (saved) {
       try {
-        const savedProjects = JSON.parse(saved);
-        project = savedProjects.find((p: any) => p.id === projectId);
+        const savedProjects: ProjectBlueprint[] = JSON.parse(saved);
+        project = savedProjects.find((p: ProjectBlueprint) => p.id === projectId);
       } catch (e) {
         console.error(e);
       }
@@ -90,7 +90,7 @@ export default function App() {
     }
   }, []);
 
-  const handleFormSubmitSuccess = (data: ProjectGenerationResponse, inputParams?: any) => {
+  const handleFormSubmitSuccess = (data: ProjectGenerationResponse, inputParams?: ProjectGenerationInput) => {
     setGenerationResponse(data);
     localStorage.setItem('projectpilot_current_generation', JSON.stringify(data));
 
@@ -149,7 +149,7 @@ export default function App() {
           <Route
             path="/saved"
             element={
-              <SavedProjectsWrapper onSelectGeneration={(data) => setGenerationResponse(data)} />
+              <SavedProjectsWrapper onSelectGeneration={(data: ProjectGenerationResponse) => setGenerationResponse(data)} />
             }
           />
           <Route
@@ -166,11 +166,11 @@ export default function App() {
 }
 
 // Intermediary components to allow useNavigate hook usage inside routers
-function SkillFormWrapper({ onSubmitSuccess }: { onSubmitSuccess: (data: any, input: any) => void }) {
+function SkillFormWrapper({ onSubmitSuccess }: { onSubmitSuccess: (data: ProjectGenerationResponse, input: ProjectGenerationInput) => void }) {
   const navigate = useNavigate();
   return (
     <SkillForm
-      onSubmitSuccess={(data, input) => {
+      onSubmitSuccess={(data: ProjectGenerationResponse, input: ProjectGenerationInput) => {
         onSubmitSuccess(data, input);
         navigate('/projects');
       }}
@@ -187,17 +187,17 @@ function ProjectResultsWrapper({ generationResponse }: { generationResponse: Pro
     <ProjectResults
       response={generationResponse}
       onNavigateBack={() => navigate('/generate')}
-      onSelectProject={(id) => navigate('/projects/' + id)}
+      onSelectProject={(id: string) => navigate('/projects/' + id)}
     />
   );
 }
 
-function SavedProjectsWrapper({ onSelectGeneration }: { onSelectGeneration: (data: any) => void }) {
+function SavedProjectsWrapper({ onSelectGeneration }: { onSelectGeneration: (data: ProjectGenerationResponse) => void }) {
   const navigate = useNavigate();
   return (
     <SavedProjects
       onNavigateBack={() => navigate(-1)}
-      onSelectProject={(id) => navigate('/projects/' + id)}
+      onSelectProject={(id: string) => navigate('/projects/' + id)}
       onNavigateToProjects={() => {
         const current = localStorage.getItem('projectpilot_current_generation');
         if (current) {
