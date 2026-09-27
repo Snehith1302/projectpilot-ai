@@ -131,7 +131,7 @@ export default function SavedProjects({ onNavigateBack, onSelectProject, onNavig
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {savedProjects.map((project) => (
+            {savedProjects.map((project: ProjectBlueprint) => (
               <div
                 key={project.id}
                 onClick={() => onSelectProject(project.id)}
@@ -140,7 +140,7 @@ export default function SavedProjects({ onNavigateBack, onSelectProject, onNavig
                 {/* Delete Bookmark Action */}
                 <button
                   type="button"
-                  onClick={(e) => removeBookmark(project.id, e)}
+                  onClick={(e: React.MouseEvent) => removeBookmark(project.id, e)}
                   className="absolute right-4 top-4 p-1.5 rounded-lg border border-red-500/20 bg-red-950/20 text-red-400 hover:bg-red-500 hover:text-white transition-all"
                   title="Remove Bookmark"
                 >
@@ -163,7 +163,7 @@ export default function SavedProjects({ onNavigateBack, onSelectProject, onNavig
 
                   {/* Tech stack chips */}
                   <div className="flex flex-wrap gap-1.5">
-                    {project.techStack.map((tech, idx) => (
+                    {project.techStack.map((tech: string, idx: number) => (
                       <span key={idx} className="text-[10px] font-medium bg-slate-900/60 dark:bg-slate-900 border border-cardBorder text-textSecondary px-2 py-0.5 rounded">
                         {tech}
                       </span>
@@ -228,7 +228,7 @@ export default function SavedProjects({ onNavigateBack, onSelectProject, onNavig
               </button>
             </div>
             <div className="grid grid-cols-1 gap-4">
-              {history.map((item) => (
+              {history.map((item: HistoryItem) => (
                 <div
                   key={item.id}
                   onClick={() => loadHistoryGeneration(item)}

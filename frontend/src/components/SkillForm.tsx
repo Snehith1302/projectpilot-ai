@@ -110,7 +110,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
   };
 
   const handleRemoveSkill = (index: number) => {
-    const updated = skills.filter((_, i) => i !== index);
+    const updated = skills.filter((_: string, i: number) => i !== index);
     setValue('skills', updated, { shouldValidate: true });
   };
 
@@ -124,7 +124,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
   };
 
   const handleRemoveFramework = (index: number) => {
-    const updated = frameworks.filter((_, i) => i !== index);
+    const updated = frameworks.filter((_: string, i: number) => i !== index);
     setValue('frameworks', updated, { shouldValidate: true });
   };
 
@@ -203,7 +203,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
               </div>
             ) : (
               <div className="space-y-4">
-                {loadingSteps.map((step, idx) => {
+                {loadingSteps.map((step: { title: string; desc: string }, idx: number) => {
                   const isDone = loadingStep > idx;
                   const isCurrent = loadingStep === idx;
                   return (
@@ -288,7 +288,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
                   { key: 'aiml_engineer', label: 'AI/ML Eng' },
                   { key: 'full_stack', label: 'Full Stack' },
                   { key: 'devops_cloud', label: 'DevOps / Cloud' }
-                ].map(item => (
+                ].map((item: { key: string; label: string }) => (
                   <label
                     key={item.key}
                     className={`flex items-center justify-center py-2.5 rounded-lg border text-xs font-medium cursor-pointer transition-all ${
@@ -316,7 +316,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
               Languages & Technologies (Type & Press Enter)
             </label>
             <div className="flex flex-wrap gap-2 p-2.5 rounded-xl bg-inputBg border border-cardBorder min-h-12 items-center">
-              {skills.map((skill, index) => (
+              {skills.map((skill: string, index: number) => (
                 <span key={index} className="inline-flex items-center gap-1 bg-indigo-950/50 text-indigo-400 border border-indigo-500/30 px-2.5 py-1 rounded-lg text-xs font-medium">
                   {skill}
                   <button type="button" onClick={() => handleRemoveSkill(index)} className="hover:text-textPrimary transition-colors cursor-pointer">
@@ -327,8 +327,8 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
               <input
                 type="text"
                 value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                onKeyDown={(e) => {
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewSkill(e.target.value)}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === 'Enter') handleAddSkill(e);
                 }}
                 placeholder="Add skill..."
@@ -349,7 +349,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
               Frameworks & Tools (Type & Press Enter)
             </label>
             <div className="flex flex-wrap gap-2 p-2.5 rounded-xl bg-inputBg border border-cardBorder min-h-12 items-center">
-              {frameworks.map((fw, index) => (
+              {frameworks.map((fw: string, index: number) => (
                 <span key={index} className="inline-flex items-center gap-1 bg-violet-950/50 text-violet-400 border border-violet-500/30 px-2.5 py-1 rounded-lg text-xs font-medium">
                   {fw}
                   <button type="button" onClick={() => handleRemoveFramework(index)} className="hover:text-textPrimary transition-colors cursor-pointer">
@@ -360,8 +360,8 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
               <input
                 type="text"
                 value={newFramework}
-                onChange={(e) => setNewFramework(e.target.value)}
-                onKeyDown={(e) => {
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFramework(e.target.value)}
+                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === 'Enter') handleAddFramework(e);
                 }}
                 placeholder="Add framework..."
@@ -427,7 +427,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
                   { key: 'intermediate', label: 'Intermediate' },
                   { key: 'advanced', label: 'Advanced' },
                   { key: 'production_enterprise', label: 'Production Grade' }
-                ].map(item => (
+                ].map((item: { key: string; label: string }) => (
                   <button
                     key={item.key}
                     type="button"
@@ -452,7 +452,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
                 {[
                   { key: 'solo', label: 'Solo Developer' },
                   { key: 'team', label: 'Team (2-4 Developers)' }
-                ].map(item => (
+                ].map((item: { key: string; label: string }) => (
                   <button
                     key={item.key}
                     type="button"
@@ -494,7 +494,7 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
                 </label>
                 <select
                   value={selectedProvider}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                     setSelectedProvider(e.target.value);
                     const models = health?.providers[e.target.value as keyof typeof health.providers]?.models || [];
                     setSelectedModel(models[0] || 'default');
@@ -515,13 +515,13 @@ export default function SkillForm({ onSubmitSuccess }: SkillFormProps) {
                 </label>
                 <select
                   value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedModel(e.target.value)}
                   className="w-full rounded-xl bg-inputBg border border-cardBorder px-4 py-3 text-sm text-textPrimary focus:border-indigo-500 focus:outline-none"
                 >
                   {activeModels.length === 0 ? (
                     <option value="default">No Models Found (Standard Fallback)</option>
                   ) : (
-                    activeModels.map((m, idx) => (
+                    activeModels.map((m: string, idx: number) => (
                       <option key={idx} value={m}>{m}</option>
                     ))
                   )}

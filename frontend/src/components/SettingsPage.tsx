@@ -125,7 +125,7 @@ export default function SettingsPage({ onBack }: SettingsPageProps) {
               { key: 'light', label: 'Light Clean (Minimal)' },
               { key: 'dark', label: 'Dark Default (Slate/Indigo)' },
               { key: 'amoled', label: 'Amoled Black (Contrast)' }
-            ].map(item => (
+            ].map((item: { key: string; label: string }) => (
               <button
                 key={item.key}
                 onClick={() => setTheme(item.key)}
@@ -148,7 +148,7 @@ export default function SettingsPage({ onBack }: SettingsPageProps) {
           </label>
           <select
             value={prefProvider}
-            onChange={(e) => setPrefProvider(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPrefProvider(e.target.value)}
             className="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-sm text-white focus:outline-none"
           >
             <option value="ollama">Ollama (Localhost Engine)</option>
@@ -169,10 +169,10 @@ export default function SettingsPage({ onBack }: SettingsPageProps) {
           ) : availableModels.length > 0 ? (
             <select
               value={prefModel}
-              onChange={(e) => setPrefModel(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPrefModel(e.target.value)}
               className="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-sm text-white focus:outline-none"
             >
-              {availableModels.map((m) => (
+              {availableModels.map((m: string) => (
                 <option key={m} value={m}>{m}</option>
               ))}
             </select>
@@ -180,7 +180,7 @@ export default function SettingsPage({ onBack }: SettingsPageProps) {
             <input
               type="text"
               value={prefModel}
-              onChange={(e) => setPrefModel(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPrefModel(e.target.value)}
               placeholder="e.g. llama3.1:latest"
               className="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-sm text-white focus:outline-none"
             />
@@ -195,7 +195,7 @@ export default function SettingsPage({ onBack }: SettingsPageProps) {
           </label>
           <select
             value={retries}
-            onChange={(e) => setRetries(parseInt(e.target.value, 10))}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRetries(parseInt(e.target.value, 10))}
             className="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-3 text-sm text-white focus:outline-none"
           >
             <option value={0}>0 - No Retries (Fail Immediately)</option>

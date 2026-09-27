@@ -49,7 +49,7 @@ ${project.problemStatement.overview}
 ${project.problemStatement.targetAudience}
 
 ### User Personas
-${project.problemStatement.userPersonas.map(p => `- ${p}`).join('\n')}
+${project.problemStatement.userPersonas.map((p: string) => `- ${p}`).join('\n')}
 
 ## 2. System Architecture
 ### Architectural Narrative
@@ -60,14 +60,14 @@ ${project.systemArchitecture.dataFlow}
 
 ## 3. Database & API Specification
 ### Database Tables
-${project.databaseApiSpecification.tables.map(t => `
+${project.databaseApiSpecification.tables.map((t: ProjectBlueprint['databaseApiSpecification']['tables'][number]) => `
 #### Table: ${t.name}
 - **Description:** ${t.description}
 - **Columns:** ${t.columns.join(', ')}
 `).join('\n')}
 
 ### API Endpoints
-${project.databaseApiSpecification.endpoints.map(e => `
+${project.databaseApiSpecification.endpoints.map((e: ProjectBlueprint['databaseApiSpecification']['endpoints'][number]) => `
 - **${e.method} ${e.path}**
   - *Description:* ${e.description}
   - *Request Body:* \`${e.requestBody || 'None'}\`
@@ -89,14 +89,14 @@ ${r.tasks.map(t => `- [ ] ${t}`).join('\n')}
 - **Host Provider Target:** ${project.deploymentCiCd.host}
 - **Containerization Engine:** ${project.deploymentCiCd.containerization}
 - **Execution Steps:**
-${project.deploymentCiCd.steps.map(s => `- ${s}`).join('\n')}
+${project.deploymentCiCd.steps.map((s: string) => `- ${s}`).join('\n')}
 
 ## 7. Placement Artifacts
 ### ATS Resume Bullet Points
-${project.placementArtifacts.resumeBullets.map(b => `- ${b}`).join('\n')}
+${project.placementArtifacts.resumeBullets.map((b: string) => `- ${b}`).join('\n')}
 
 ### Technical Interview Q&A
-${project.placementArtifacts.interviewQuestions.map(q => `
+${project.placementArtifacts.interviewQuestions.map((q: ProjectBlueprint['placementArtifacts']['interviewQuestions'][number]) => `
 #### Q: ${q.question}
 > **Answer Hint:** ${q.answerHint}
 `).join('\n')}
@@ -180,7 +180,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
         
         {/* Navigation Tabs (Sidebar) */}
         <div className="lg:col-span-1 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-4 lg:pb-0 border-b lg:border-b-0 border-slate-800 print:hidden">
-          {tabs.map((tab, idx) => {
+          {tabs.map((tab, idx: number) => {
             const Icon = tab.icon;
             const isSelected = activeTab === idx;
             return (
@@ -223,7 +223,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               <div>
                 <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-2">Target Personas</h4>
                 <ul className="space-y-2">
-                  {project.problemStatement.userPersonas.map((persona, index) => (
+                  {project.problemStatement.userPersonas.map((persona: string, index: number) => (
                     <li key={index} className="text-slate-300 text-sm flex items-start gap-2">
                       <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 mt-2 shrink-0" />
                       {persona}
@@ -263,7 +263,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               <div>
                 <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-3">Core Baseline Features</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {project.features.core.map((feature, idx) => (
+                  {project.features.core.map((feature: string, idx: number) => (
                     <div key={idx} className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium">
                       {feature}
                     </div>
@@ -274,7 +274,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               <div>
                 <h4 className="text-xs uppercase font-bold text-violet-400 tracking-wider mb-3">Advanced Enhancements</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {project.features.advanced.map((feature, idx) => (
+                  {project.features.advanced.map((feature: string, idx: number) => (
                     <div key={idx} className="p-4 rounded-xl bg-indigo-950/20 border border-indigo-900/40 text-slate-300 text-xs font-medium">
                       {feature}
                     </div>
@@ -295,12 +295,12 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
                 <div>
                   <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-4">Relational Entities</h4>
                   <div className="space-y-4">
-                    {project.databaseApiSpecification.tables.map((table, idx) => (
+                    {project.databaseApiSpecification.tables.map((table: ProjectBlueprint['databaseApiSpecification']['tables'][number], idx: number) => (
                       <div key={idx} className="p-4 rounded-xl bg-slate-900 border border-slate-800">
                         <h5 className="font-display font-bold text-white text-sm mb-1">{table.name}</h5>
                         <p className="text-slate-400 text-xs mb-3">{table.description}</p>
                         <div className="flex flex-wrap gap-1.5">
-                          {table.columns.map((col, cIdx) => (
+                          {table.columns.map((col: string, cIdx: number) => (
                             <span key={cIdx} className="text-[10px] font-mono bg-slate-950 border border-slate-800 text-indigo-300 px-2 py-0.5 rounded">
                               {col}
                             </span>
@@ -316,7 +316,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
                 <div>
                   <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-4">API Operations Dashboard</h4>
                   <div className="space-y-4">
-                    {project.databaseApiSpecification.endpoints.map((endpoint, idx) => {
+                    {project.databaseApiSpecification.endpoints.map((endpoint: ProjectBlueprint['databaseApiSpecification']['endpoints'][number], idx: number) => {
                       return (
                         <div key={idx} className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
                           <div className="flex items-center gap-2">
@@ -377,7 +377,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               </h3>
               
               <div className="space-y-6">
-                {project.roadmap.map((phase, idx) => (
+                {project.roadmap.map((phase: ProjectBlueprint['roadmap'][number], idx: number) => (
                   <div key={idx} className="relative pl-6 border-l border-slate-800">
                     {/* Timeline bullet node */}
                     <div className="absolute left-[-5px] top-1.5 h-2.5 w-2.5 rounded-full bg-indigo-500 shadow shadow-indigo-500/50" />
@@ -386,7 +386,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
                     <h4 className="font-display font-bold text-white text-base mt-0.5 mb-3">{phase.title}</h4>
                     
                     <ul className="space-y-2">
-                      {phase.tasks.map((task, tIdx) => (
+                      {phase.tasks.map((task: string, tIdx: number) => (
                         <li key={tIdx} className="text-slate-300 text-xs flex items-center gap-2">
                           <input type="checkbox" readOnly checked={false} className="rounded border-slate-800 bg-slate-900 text-indigo-600 shrink-0" />
                           {task}
@@ -420,7 +420,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               <div>
                 <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-3">Deployment Execution Steps</h4>
                 <ol className="space-y-3">
-                  {project.deploymentCiCd.steps.map((step, idx) => (
+                  {project.deploymentCiCd.steps.map((step: string, idx: number) => (
                     <li key={idx} className="flex gap-3 text-slate-300 text-xs items-start">
                       <span className="flex h-5 w-5 rounded-full bg-slate-800 text-[10px] font-bold text-indigo-300 items-center justify-center shrink-0">
                         {idx + 1}
@@ -443,7 +443,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               <div>
                 <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-3">ATS Resume Impact Bullets</h4>
                 <div className="space-y-3">
-                  {project.placementArtifacts.resumeBullets.map((bullet, idx) => (
+                  {project.placementArtifacts.resumeBullets.map((bullet: string, idx: number) => (
                     <div key={idx} className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-start gap-3">
                       <span className="h-2 w-2 rounded-full bg-indigo-500 mt-2 shrink-0 animate-pulse" />
                       <p className="text-slate-300 text-xs leading-relaxed">{bullet}</p>
@@ -455,7 +455,7 @@ ${project.placementArtifacts.interviewQuestions.map(q => `
               <div>
                 <h4 className="text-xs uppercase font-bold text-indigo-400 tracking-wider mb-3">Mock Technical Q&A Interview Questions</h4>
                 <div className="space-y-4">
-                  {project.placementArtifacts.interviewQuestions.map((qa, idx) => (
+                  {project.placementArtifacts.interviewQuestions.map((qa: ProjectBlueprint['placementArtifacts']['interviewQuestions'][number], idx: number) => (
                     <div key={idx} className="p-4 rounded-xl bg-indigo-950/20 border border-indigo-900/40 space-y-2">
                       <h5 className="font-display font-bold text-white text-sm">Q: {qa.question}</h5>
                       <div className="p-3 rounded bg-slate-950/80 border border-slate-900 text-xs text-indigo-300 italic">

@@ -42,8 +42,8 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
   };
 
   const toggleCompare = (project: ProjectBlueprint) => {
-    if (compareList.some(p => p.id === project.id)) {
-      setCompareList(compareList.filter(p => p.id !== project.id));
+    if (compareList.some((p: ProjectBlueprint) => p.id === project.id)) {
+      setCompareList(compareList.filter((p: ProjectBlueprint) => p.id !== project.id));
     } else {
       if (compareList.length >= 3) {
         alert('You can compare a maximum of 3 projects at once.');
@@ -54,11 +54,11 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
   };
 
   // Filter recommendations based on controls
-  const filteredProjects = response.projects.filter(project => {
+  const filteredProjects = response.projects.filter((project: ProjectBlueprint) => {
     const matchesSearch = 
       project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.techStack.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+      project.techStack.some((tech: string) => tech.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const matchesDifficulty = selectedDifficulty === 'all' || 
       project.difficulty.toLowerCase() === selectedDifficulty.toLowerCase();
@@ -145,9 +145,9 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => {
+          {filteredProjects.map((project: ProjectBlueprint) => {
             const isBookmarked = bookmarks.includes(project.id);
-            const isCompareSelected = compareList.some(p => p.id === project.id);
+            const isCompareSelected = compareList.some((p: ProjectBlueprint) => p.id === project.id);
             return (
               <div key={project.id} className="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between h-full relative group">
                 {/* Bookmarking Action */}
@@ -179,7 +179,7 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
 
                   {/* Tech stack chips */}
                   <div className="flex flex-wrap gap-1.5">
-                    {project.techStack.map((tech, idx) => (
+                    {project.techStack.map((tech: string, idx: number) => (
                       <span key={idx} className="text-[10px] font-medium bg-slate-900 border border-slate-800 text-slate-300 px-2 py-0.5 rounded">
                         {tech}
                       </span>
@@ -291,7 +291,7 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
                 <thead>
                   <tr className="border-b border-slate-800 text-slate-400">
                     <th className="py-3 px-4 font-semibold uppercase">Feature Metric</th>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <th key={p.id} className="py-3 px-4 font-display font-bold text-white text-sm">{p.title}</th>
                     ))}
                   </tr>
@@ -299,28 +299,28 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
                 <tbody className="divide-y divide-slate-800/50">
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-300">Resume Impact Score</td>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <td key={p.id} className="py-3 px-4 text-indigo-400 font-bold">{p.resumeScore}/100</td>
                     ))}
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-300">Placement Readiness</td>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <td key={p.id} className="py-3 px-4 text-violet-400 font-bold">{p.placementScore}/100</td>
                     ))}
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-300">Innovation Quotient</td>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <td key={p.id} className="py-3 px-4 text-cyan-400 font-bold">{p.innovationScore}/100</td>
                     ))}
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-300">Tech Stack</td>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <td key={p.id} className="py-3 px-4 text-slate-300">
                         <div className="flex flex-wrap gap-1">
-                          {p.techStack.map((t, i) => (
+                          {p.techStack.map((t: string, i: number) => (
                             <span key={i} className="bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-[10px]">{t}</span>
                           ))}
                         </div>
@@ -329,13 +329,13 @@ export default function ProjectResults({ response, onNavigateBack, onSelectProje
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-300">Complexity & Level</td>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <td key={p.id} className="py-3 px-4 text-slate-300">{p.difficulty}</td>
                     ))}
                   </tr>
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-300">Project Duration</td>
-                    {compareList.map(p => (
+                    {compareList.map((p: ProjectBlueprint) => (
                       <td key={p.id} className="py-3 px-4 text-slate-300">{p.duration}</td>
                     ))}
                   </tr>
