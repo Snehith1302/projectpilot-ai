@@ -2,6 +2,11 @@
   "name": "projectpilot-ai-monorepo",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
   "scripts": {
     "install:all": "npm install && npm install --prefix shared && npm install --prefix backend && npm install --prefix frontend",
     "dev:backend": "npm run dev --prefix backend",
